@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./resources/js/*"]
+    },
+    "strict": true,
+        "esModuleInterop": true,
+        "lib": [
+            "dom",
+            "esnext"
+        ],
+        "jsx": "react-jsx"
+  },
+  "include": ["resources/js/**/*"]
+}
