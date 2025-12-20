@@ -124,7 +124,7 @@ const UserNavbar = () => {
                 </div>
 
                 {/* LOGO */}
-                <div className="flex items-center gap-10">
+                <div className="flex items-center gap-10 py-4">
                     <HiOutlineMenuAlt4
                         className="hidden md:hidden xl:hidden"
                         style={{
