@@ -5,7 +5,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import LogoFooter from "@images/LogoFooter.WebP";
+import LogoFooter from "@images/logoLm.png";
 import telegram from "@images/telegram.WebP";
 import whatsapp from "@images/whatsapp.WebP";
 import vk from "@images/vk.WebP";

@@ -8,7 +8,7 @@ import {
 import { ImStarEmpty } from "react-icons/im";
 import { RiCloseLargeFill } from "react-icons/ri";
 import { BiUser } from "react-icons/bi";
-import Logo from "@images/Logo1.avif";
+import Logo from "@images/logoLm.png";
 
 const UserNavbar = () => {
     const [searchInputVisible, setSearchInputVisible] = useState(false);
@@ -77,7 +77,7 @@ const UserNavbar = () => {
 
                 {/* SIDEBAR */}
                 <div
-                    className={`fixed top-0 left-0 w-64 h-full bg-gray-800 text-white z-50 p-4 transform transition-transform duration-500 ${
+                    className={`fixed top-0 left-0 w-64 h-full bg-gray-800 text-white z-50 px-4 py-8 transform transition-transform duration-500 ${
                         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
                     }`}
                 >
@@ -90,7 +90,7 @@ const UserNavbar = () => {
                                 src={Logo}
                                 alt="Logo"
                                 loading="lazy"
-                                className="w-full h-auto"
+                                className="w-[120px] h-auto pl-4"
                             />
                         </button>
                         <button
@@ -139,7 +139,7 @@ const UserNavbar = () => {
                             src={Logo}
                             alt="Company Logo"
                             loading="lazy"
-                            className="w-16 md:w-full h-auto md:pr-5"
+                            className="w-[120px] md:w-[150px] h-auto md:pr-5"
                         />
                     </Link>
                 </div>
