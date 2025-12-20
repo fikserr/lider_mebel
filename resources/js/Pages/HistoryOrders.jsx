@@ -36,7 +36,7 @@ const HistoryOrders = ({ orders }) => {
         <div className='my-24 px-5 xl:px-32'>
             <div className='flex items-center gap-2'>
                 <HiOutlineChevronLeft className='text-2xl' />
-                <Link href={"/profile"} aria-label='Profile link'><h1 className='font-bold text-5xl font-oswald' >Tarix</h1></Link>
+                <Link href={"/profile"} aria-label='Profile link'><h1 className='font-bold text-3xl md:text-4xl md992:text-5xl font-oswald' >Buyurtmalarim</h1></Link>
             </div>
             <div className='grid lg:grid-cols-4 gap-5'>
                 <ProfileSidebar />

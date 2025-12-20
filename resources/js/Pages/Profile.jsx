@@ -3,6 +3,7 @@ import { router } from "@inertiajs/react";
 import ProfileSidebar from "@/components/shared/profile-sidebar";
 import { BiUser } from "react-icons/bi";
 import { RiLogoutBoxRLine } from "react-icons/ri";
+import { HiOutlineChevronLeft } from "react-icons/hi";
 import { RxLockOpen2 } from "react-icons/rx";
 import { VscChecklist } from "react-icons/vsc";
 import { MdOutlineAddLocationAlt, MdOutlineLocationOn } from "react-icons/md";
@@ -15,9 +16,10 @@ const Profile = () => {
         <div className="my-24 px-5 xl:px-32">
             <Link href={"/"}>
                 <h1
-                    className="font-bold text-5xl font-oswald"
+                    className="font-bold text-5xl font-oswald flex items-center gap-2"
                     aria-label="Profile Link"
                 >
+                    <HiOutlineChevronLeft className='text-2xl' />
                     Profile
                 </h1>
             </Link>
