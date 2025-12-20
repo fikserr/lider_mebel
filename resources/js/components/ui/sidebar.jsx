@@ -239,7 +239,7 @@ const SidebarTrigger = React.forwardRef(({ className, onClick, ...props }, ref) 
         size="icon"
         // className={cn("h-7 w-7 absolute top-2 left-64 z-10", className )}
         className={cn(
-          "h-7 w-7 absolute top-2 z-10 transition-all duration-300",
+          "h-7 w-7 fixed top-2 z-10 transition-all duration-300",
           state === "expanded" ? "left-64" : "left-0", // <-- bu yer muhim
           className
         )}
