@@ -8,7 +8,7 @@ import {
 import { ImStarEmpty } from "react-icons/im";
 import { RiCloseLargeFill } from "react-icons/ri";
 import { BiUser } from "react-icons/bi";
-import Logo from "@images/Logo1.avif";
+import Logo from "@images/LogoLM.avif";
 
 const UserNavbar = () => {
     const [searchInputVisible, setSearchInputVisible] = useState(false);
@@ -32,7 +32,7 @@ const UserNavbar = () => {
     }, []);
 
     return (
-        <div className="py-5 px-5 md:px-16 xl:px-20 fixed z-10 top-0 w-full bg-[rgb(18,18,20)]">
+        <div className="py-1 px-6 md:px-16 xl:px-20 fixed z-10 top-0 w-full bg-[rgb(18,18,20)]">
             <div className="flex items-center justify-between md:justify-between">
                 {/* MOBILE LEFT */}
                 <div className="flex items-center gap-5 md:hidden">
@@ -50,9 +50,9 @@ const UserNavbar = () => {
                             onClick={toggleMobileSearch}
                         />
                         <div
-                            className={`absolute top-14 left-0 transition-all duration-200 ease-in transform origin-top ${
+                            className={`absolute top-12 left-10 sm428:left-10 transition-all duration-200 ease-in transform origin-top ${
                                 isMobileSearchOpen
-                                    ? "scale-y-100 opacity-100"
+                                    ? "scale-y-10 opacity-100"
                                     : "scale-y-10 opacity-0"
                             }`}
                         >
@@ -90,7 +90,7 @@ const UserNavbar = () => {
                                 src={Logo}
                                 alt="Logo"
                                 loading="lazy"
-                                className="w-full h-auto"
+                                className="w-24 h-14"
                             />
                         </button>
                         <button
@@ -102,7 +102,7 @@ const UserNavbar = () => {
                         </button>
                     </div>
                     <div className="space-y-2 mt-10">
-                        <Link href={`/category/3`} aria-label="Short">
+                        {/* <Link href={`/category/3`} aria-label="Short">
                             <SidebarButton label="Kiyimlar" />
                         </Link>
                         <Link href={"/category/4"} aria-label="Shoes">
@@ -113,7 +113,7 @@ const UserNavbar = () => {
                         </Link>
                         <Link href={"/policy"} aria-label="Policy link">
                             <SidebarButton label="Ma'lumot" />
-                        </Link>
+                        </Link> */}
                         <Link href={"/profile"} aria-label="Profile Link">
                             <SidebarButton label="Profile" />
                         </Link>
@@ -139,13 +139,13 @@ const UserNavbar = () => {
                             src={Logo}
                             alt="Company Logo"
                             loading="lazy"
-                            className="w-16 md:w-full h-auto md:pr-5"
+                            className="w-20 md:w-28 h-auto md:pr-5"
                         />
                     </Link>
                 </div>
 
                 {/* NAV LINKS */}
-                <div className="w-4/6 hidden md:flex justify-start">
+                {/* <div className="w-4/6 hidden md:flex justify-start">
                     <ul className="flex gap-5 2xl:gap-10 md:text-base xl:text-xl">
                         <li>
                             <NavItem
@@ -176,7 +176,7 @@ const UserNavbar = () => {
                             />
                         </li>
                     </ul>
-                </div>
+                </div> */}
 
                 {/* RIGHT ICONS */}
                 <div className="flex items-center gap-2 sm:gap-5 md:gap-4 xl:gap-6 relative">
@@ -226,7 +226,7 @@ const UserNavbar = () => {
                         </Link>
                     )}
                     <div
-                        className={`absolute -inset-2top-0 right-[135px] transition-all duration-200 ease-in transform origin-top ${
+                        className={`absolute -inset-2top-0 right-[111px] xl:right-[135px] transition-all duration-200 ease-in transform origin-top ${
                             searchInputVisible
                                 ? "scale-y-10 opacity-100"
                                 : "scale-y-10 opacity-0"

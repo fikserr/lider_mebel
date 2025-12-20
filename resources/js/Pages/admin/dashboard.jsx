@@ -19,11 +19,11 @@ const AdminDashboard = () => {
       <AppSidebar />
       <h1 className="text-3xl font-bold mb-4 p-5">Dashboardd</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 px-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
         {cards.map((card, index) => (
           <div
             key={index}
-            className="p-5 border rounded-lg space-y-5 hover:shadow-md transition w-full"
+            className="p-2 border rounded-lg space-y-2 hover:shadow-md transition w-full"
           >
             <div className="space-y-5">
               <div className="flex justify-between">
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
         ))}
       </div>
       <h2 className="text-2xl font-bold mt-10 mb-4 px-5">Sales Overview</h2>
-      <div className="w-full h-[300px] px-5">
+      <div className="w-full h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={lineChartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" />
