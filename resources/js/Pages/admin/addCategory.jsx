@@ -1,66 +1,264 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 
 const AddCategory = () => {
-  const [name, setName] = useState('');
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
+  /* ================= STATES ================= */
+  const [name, setName] = useState('');
+  const [image, setImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // edit states
+  const [editingId, setEditingId] = useState(null);
+  const [editName, setEditName] = useState('');
+
+  /* ================= FETCH ================= */
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get('/admin/categories');
+
+      if (Array.isArray(res.data)) {
+        setCategories(res.data);
+      } else if (Array.isArray(res.data.categories)) {
+        setCategories(res.data.categories);
+      } else {
+        setCategories([]);
+      }
+    } catch (e) {
+      setCategories([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  /* ================= CREATE ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setErrors({});
 
     try {
-      await axios.post('/admin/categories', { name });
+      const formData = new FormData();
+      formData.append('name', name);
+      if (image) formData.append('image', image);
+
+      await axios.post('/admin/categories', formData);
 
       toast({
         title: 'Muvaffaqiyatli',
-        description: `Kategoriya "${name}" qo‘shildi`,
+        description: 'Kategoriya qo‘shildi',
       });
 
       setName('');
-    } catch (error) {
-      if (error.response?.status === 422) {
-        setErrors(error.response.data.errors || {});
-      } else {
-        toast({
-          title: 'Xatolik',
-          description: 'Kategoriya qo‘shishda xatolik yuz berdi',
-        });
-      }
+      setImage(null);
+      setPreviewImage(null);
+      fetchCategories();
+    } catch (e) {
+      toast({
+        title: 'Xatolik',
+        description: 'Kategoriya qo‘shilmadi',
+      });
     } finally {
       setLoading(false);
     }
   };
 
+  /* ================= IMAGE ================= */
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setImage(file);
+    const reader = new FileReader();
+    reader.onloadend = () => setPreviewImage(reader.result);
+    reader.readAsDataURL(file);
+  };
+
+  /* ================= EDIT ================= */
+  const startEdit = (cat) => {
+    setEditingId(cat.id);
+    setEditName(cat.name);
+  };
+
+  const handleUpdate = async (id) => {
+    try {
+      await axios.put(`/admin/categories/${id}`, {
+        name: editName,
+      });
+
+      toast({
+        title: 'Yangilandi',
+        description: 'Kategoriya yangilandi',
+      });
+
+      setEditingId(null);
+      setEditName('');
+      fetchCategories();
+    } catch {
+      toast({
+        title: 'Xatolik',
+        description: 'Yangilashda xatolik',
+      });
+    }
+  };
+
+  /* ================= DELETE ================= */
+  const handleDelete = async (id) => {
+    if (!confirm('Kategoriya o‘chirilsinmi?')) return;
+
+    try {
+      await axios.delete(`/admin/categories/${id}`);
+      fetchCategories();
+
+      toast({
+        title: 'O‘chirildi',
+        description: 'Kategoriya o‘chirildi',
+      });
+    } catch {
+      toast({
+        title: 'Xatolik',
+        description: 'O‘chirishda xatolik',
+      });
+    }
+  };
+
+  /* ================= RENDER ================= */
   return (
-    <div className="p-6 min-h-screen font-sans xl:w-[1200px] my-10">
-      <h1 className="text-3xl font-bold mb-4">Yangi kategoriya qo‘shish</h1>
-      <div className='flex flex-col'>
-        <form onSubmit={handleSubmit} className="space-y-4 flex flex-col">
+    <div className="p-6 min-h-screen xl:w-[1200px] my-10 space-y-10">
+
+      {/* ===== ADD FORM ===== */}
+      <div>
+        <h1 className="text-3xl font-bold mb-6">Yangi kategoriya qo‘shish</h1>
+
+        <form onSubmit={handleSubmit} className="space-y-6 max-w-xl">
+
+          <div className="flex justify-center">
+            <div className="relative w-28 h-28">
+              <div className="w-full h-full bg-slate-200 rounded-full overflow-hidden flex items-center justify-center">
+                {previewImage ? (
+                  <img src={previewImage} className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-5xl">📷</span>
+                )}
+              </div>
+
+              <label className="absolute inset-0 cursor-pointer flex items-center justify-center hover:bg-black/30 rounded-full">
+                <input type="file" className="hidden" onChange={handleFileUpload} />
+                <span className="text-xs text-white bg-black/60 px-2 py-1 rounded-full">
+                  Upload
+                </span>
+              </label>
+            </div>
+          </div>
+
           <input
-            type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Kategoriya nomi (masalan: Telefon)"
-            className="max-w-xl border px-4 py-2 rounded"
+            placeholder="Kategoriya nomi"
+            className="border px-4 py-2 rounded w-full"
+            required
           />
-          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
 
           <button
-            type="submit"
             disabled={loading}
-            className={`bg-blue-600 text-white px-6 py-2 rounded max-w-xs hover:bg-blue-700 ${loading ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
+            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
           >
             {loading ? 'Yuklanmoqda...' : 'Saqlash'}
           </button>
         </form>
       </div>
 
+      {/* ===== TABLE ===== */}
+      <div>
+        <h2 className="text-2xl font-semibold mb-4">Kategoriyalar</h2>
+
+        <table className="w-full border text-sm">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="border px-4 py-2">#</th>
+              <th className="border px-4 py-2">Rasm</th>
+              <th className="border px-4 py-2">Nomi</th>
+              <th className="border px-4 py-2">Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {categories.length === 0 && (
+              <tr>
+                <td colSpan="4" className="py-4 text-center text-gray-500">
+                  Kategoriya yo‘q
+                </td>
+              </tr>
+            )}
+
+            {categories.map((cat, i) => (
+              <tr key={cat.id} className="text-center">
+                <td className="border px-4 py-2">{i + 1}</td>
+
+                <td className="border px-4 py-2">
+                  {cat.image && (
+                    <img
+                      src={`/storage/${cat.image}`}
+                      className="w-10 h-10 object-cover rounded-full mx-auto"
+                    />
+                  )}
+                </td>
+
+                <td className="border px-4 py-2">
+                  {editingId === cat.id ? (
+                    <input
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      className="border px-2 py-1 rounded"
+                    />
+                  ) : (
+                    cat.name
+                  )}
+                </td>
+
+                <td className="border px-4 py-2 space-x-2">
+                  {editingId === cat.id ? (
+                    <>
+                      <button
+                        onClick={() => handleUpdate(cat.id)}
+                        className="bg-green-600 text-white px-3 py-1 rounded"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => setEditingId(null)}
+                        className="bg-gray-500 text-white px-3 py-1 rounded"
+                      >
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => startEdit(cat)}
+                        className="bg-yellow-500 text-white px-3 py-1 rounded"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(cat.id)}
+                        className="bg-red-600 text-white px-3 py-1 rounded"
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
