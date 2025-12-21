@@ -15,23 +15,42 @@ class CategoryController extends Controller
             'categories' => $categories
         ]);
     }
-
+     public function homeCategories()
+    {
+        $categories = Category::all();
+        return Inertia::render('Home', [
+            'categories' => $categories
+        ]);
+    }
     public function create()
-    {
-        return Inertia::render('admin/addCategory');
+{
+    $categories = Category::all();
+
+    return Inertia::render('admin/addCategory', [
+        'categoriesList' => $categories
+    ]);
+}
+
+public function store(Request $request)
+{
+    $request->validate([
+        'name'  => 'required|string|unique:categories,name',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+    ]);
+
+    $imagePath = null;
+
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('categories', 'public');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|unique:categories,name',
-        ]);
+    Category::create([
+        'name'  => $request->name,
+        'image' => $imagePath,
+    ]);
 
-        Category::create([
-            'name' => $request->name,
-        ]);
+    return redirect()->back()->with('success', 'Kategoriya muvaffaqiyatli qo‘shildi!');
+}
 
-        return redirect()->back()->with('success', 'Kategoriya muvaffaqiyatli qo‘shildi!');
-    }
 }
 

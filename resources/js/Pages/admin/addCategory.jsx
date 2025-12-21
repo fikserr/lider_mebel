@@ -2,19 +2,17 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 
-const AddCategory = () => {
+const AddCategory = ({categoriesList}) => {
   const { toast } = useToast();
 
+  
   /* ================= STATES ================= */
   const [name, setName] = useState('');
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  // edit states
-  const [editingId, setEditingId] = useState(null);
-  const [editName, setEditName] = useState('');
+console.log(categoriesList);
 
   /* ================= FETCH ================= */
   const fetchCategories = async () => {
@@ -28,7 +26,7 @@ const AddCategory = () => {
       } else {
         setCategories([]);
       }
-    } catch (e) {
+    } catch {
       setCategories([]);
     }
   };
@@ -58,7 +56,7 @@ const AddCategory = () => {
       setImage(null);
       setPreviewImage(null);
       fetchCategories();
-    } catch (e) {
+    } catch {
       toast({
         title: 'Xatolik',
         description: 'Kategoriya qo‘shilmadi',
@@ -79,54 +77,6 @@ const AddCategory = () => {
     reader.readAsDataURL(file);
   };
 
-  /* ================= EDIT ================= */
-  const startEdit = (cat) => {
-    setEditingId(cat.id);
-    setEditName(cat.name);
-  };
-
-  const handleUpdate = async (id) => {
-    try {
-      await axios.put(`/admin/categories/${id}`, {
-        name: editName,
-      });
-
-      toast({
-        title: 'Yangilandi',
-        description: 'Kategoriya yangilandi',
-      });
-
-      setEditingId(null);
-      setEditName('');
-      fetchCategories();
-    } catch {
-      toast({
-        title: 'Xatolik',
-        description: 'Yangilashda xatolik',
-      });
-    }
-  };
-
-  /* ================= DELETE ================= */
-  const handleDelete = async (id) => {
-    if (!confirm('Kategoriya o‘chirilsinmi?')) return;
-
-    try {
-      await axios.delete(`/admin/categories/${id}`);
-      fetchCategories();
-
-      toast({
-        title: 'O‘chirildi',
-        description: 'Kategoriya o‘chirildi',
-      });
-    } catch {
-      toast({
-        title: 'Xatolik',
-        description: 'O‘chirishda xatolik',
-      });
-    }
-  };
-
   /* ================= RENDER ================= */
   return (
     <div className="p-6 min-h-screen xl:w-[1200px] my-10 space-y-10">
@@ -141,14 +91,22 @@ const AddCategory = () => {
             <div className="relative w-28 h-28">
               <div className="w-full h-full bg-slate-200 rounded-full overflow-hidden flex items-center justify-center">
                 {previewImage ? (
-                  <img src={previewImage} className="w-full h-full object-cover" />
+                  <img
+                    src={previewImage}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
                   <span className="text-5xl">📷</span>
                 )}
               </div>
 
               <label className="absolute inset-0 cursor-pointer flex items-center justify-center hover:bg-black/30 rounded-full">
-                <input type="file" className="hidden" onChange={handleFileUpload} />
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                />
                 <span className="text-xs text-white bg-black/60 px-2 py-1 rounded-full">
                   Upload
                 </span>
@@ -183,14 +141,13 @@ const AddCategory = () => {
               <th className="border px-4 py-2">#</th>
               <th className="border px-4 py-2">Rasm</th>
               <th className="border px-4 py-2">Nomi</th>
-              <th className="border px-4 py-2">Action</th>
             </tr>
           </thead>
 
           <tbody>
             {categories.length === 0 && (
               <tr>
-                <td colSpan="4" className="py-4 text-center text-gray-500">
+                <td colSpan="3" className="py-4 text-center text-gray-500">
                   Kategoriya yo‘q
                 </td>
               </tr>
@@ -210,55 +167,14 @@ const AddCategory = () => {
                 </td>
 
                 <td className="border px-4 py-2">
-                  {editingId === cat.id ? (
-                    <input
-                      value={editName}
-                      onChange={(e) => setEditName(e.target.value)}
-                      className="border px-2 py-1 rounded"
-                    />
-                  ) : (
-                    cat.name
-                  )}
-                </td>
-
-                <td className="border px-4 py-2 space-x-2">
-                  {editingId === cat.id ? (
-                    <>
-                      <button
-                        onClick={() => handleUpdate(cat.id)}
-                        className="bg-green-600 text-white px-3 py-1 rounded"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={() => setEditingId(null)}
-                        className="bg-gray-500 text-white px-3 py-1 rounded"
-                      >
-                        Cancel
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => startEdit(cat)}
-                        className="bg-yellow-500 text-white px-3 py-1 rounded"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(cat.id)}
-                        className="bg-red-600 text-white px-3 py-1 rounded"
-                      >
-                        Delete
-                      </button>
-                    </>
-                  )}
+                  {cat.name}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
     </div>
   );
 };
