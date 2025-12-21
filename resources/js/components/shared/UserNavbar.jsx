@@ -15,11 +15,53 @@ const UserNavbar = () => {
     const [searchInputVisible, setSearchInputVisible] = useState(false);
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [mobileSearchQuery, setMobileSearchQuery] = useState("");
 
     const { auth } = usePage().props;
 
     const toggleSearch = () => setSearchInputVisible((prev) => !prev);
     const toggleMobileSearch = () => setIsMobileSearchOpen((prev) => !prev);
+
+    // Desktop search - real-time qidiruv
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchQuery.trim()) {
+                router.visit('/', {
+                    data: { search: searchQuery.trim() },
+                    preserveState: true,
+                    preserveScroll: true,
+                });
+            } else if (searchQuery === "") {
+                router.visit('/', {
+                    preserveState: true,
+                    preserveScroll: true,
+                });
+            }
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchQuery]);
+
+    // Mobile search - real-time qidiruv
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (mobileSearchQuery.trim()) {
+                router.visit('/', {
+                    data: { search: mobileSearchQuery.trim() },
+                    preserveState: true,
+                    preserveScroll: true,
+                });
+            } else if (mobileSearchQuery === "") {
+                router.visit('/', {
+                    preserveState: true,
+                    preserveScroll: true,
+                });
+            }
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [mobileSearchQuery]);
 
     // ✅ sahifa almashtirilganda sidebar yopilishi
     useEffect(() => {
@@ -60,6 +102,8 @@ const UserNavbar = () => {
                                 <input
                                     type="text"
                                     placeholder="Search..."
+                                    value={mobileSearchQuery}
+                                    onChange={(e) => setMobileSearchQuery(e.target.value)}
                                     className="bg-transparent text-white px-3 py-1 outline-none w-64"
                                 />
                                 <HiOutlineSearch
@@ -236,6 +280,8 @@ const UserNavbar = () => {
                             <input
                                 type="text"
                                 placeholder="Search..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
                                 className="bg-transparent text-white px-3 py-1 outline-none md:w-64 md992:w-80 xl:w-96"
                             />
                             <HiOutlineSearch
