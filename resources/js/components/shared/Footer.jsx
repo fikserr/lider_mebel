@@ -5,10 +5,10 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import LogoFooter from "@images/LogoFooter.WebP";
+import LogoFooter from "@images/logoLm.png";
 import telegram from "@images/telegram.WebP";
 import whatsapp from "@images/whatsapp.WebP";
-import vk from "@images/vk.WebP";
+import vk from "@images/instagramm.WebP";
 import { Link } from "@inertiajs/react";
 
 const Footer = () => {
@@ -31,10 +31,10 @@ const Footer = () => {
                 <Accordion type="single" collapsible className="w-full">
                     {/* Ma'lumot */}
                     <AccordionItem value="malumot">
-                        <AccordionTrigger className="px-5 text-3xl text-white rounded-md uppercase">
+                        <AccordionTrigger className="px-5 text-xl text-white rounded-md uppercase">
                             Ma'lumot
                         </AccordionTrigger>
-                        <AccordionContent className="flex flex-col space-y-2 py-2 text-white">
+                        <AccordionContent className="flex items-center justify-evenly py-2 text-white text-lg">
                             <Link href="#" aria-label="Information Link">
                                 <span>Ma'lumot</span>
                             </Link>
@@ -55,10 +55,10 @@ const Footer = () => {
 
                     {/* Katalog */}
                     <AccordionItem value="katalog">
-                        <AccordionTrigger className="px-5 text-3xl text-white rounded-md uppercase">
+                        <AccordionTrigger className="px-5 text-xl text-white rounded-md uppercase">
                             Katalog
                         </AccordionTrigger>
-                        <AccordionContent className="flex flex-col space-y-2 py-2 text-white">
+                        <AccordionContent className="flex items-center justify-evenly py-2 text-white text-lg">
                             <Link href="#" aria-label="Catalog Link">
                                 <span>Katalog</span>
                             </Link>
@@ -74,32 +74,29 @@ const Footer = () => {
                             >
                                 <span>Aksessuarlar</span>
                             </Link>
-                            <Link href="#" aria-label="Calculate Expenses Link">
-                                <span>Xarajatlarni hisoblash</span>
-                            </Link>
                         </AccordionContent>
                     </AccordionItem>
 
                     {/* Kontaktlar */}
                     <AccordionItem value="kontaktlar">
-                        <AccordionTrigger className="px-5 text-3xl text-white rounded-md uppercase">
+                        <AccordionTrigger className="px-5 text-xl text-white rounded-md uppercase">
                             Kontaktlar
                         </AccordionTrigger>
-                        <AccordionContent className="flex flex-col space-y-2 py-2 text-white">
+                        <AccordionContent className="flex items-center justify-evenly py-2 text-white">
                             <Link href="#" aria-label="Contacts Link">
                                 <span>Kontaktlar</span>
                             </Link>
                             <Link
-                                href="mailto:info@xwear.info"
+                                href="mailto:lidermebellux@gmail.com"
                                 aria-label="Email Link"
                             >
-                                <span>info@xwear.info</span>
+                                <span>lidermebellux@gmail.com</span>
                             </Link>
                             <Link
-                                href="tel:+79936083885"
+                                href="tel:+998980011011"
                                 aria-label="Phone Number Link"
                             >
-                                <span>+7 993 608 38 85</span>
+                                <span>+998 98 001 10 11</span>
                             </Link>
                         </AccordionContent>
                     </AccordionItem>
@@ -145,26 +142,40 @@ const Footer = () => {
                     {/* Kontaktlar */}
                     <ul className="text-white flex flex-col gap-1 text-lg font-oswald">
                         <li className="text-2xl">Kontaktlar</li>
-                        <li className="text-base">info@xwear.info</li>
-                        <li className="text-base">+7 993 608 38 85</li>
+                        <li className="text-base">lidermebellux@gmail.com</li>
+                        <li className="text-base">+998 98 001 10 11</li>
                         <li>Messengerlar</li>
                         <li className="flex gap-1">
-                            <img
-                                src={telegram}
-                                alt="Telegram"
-                                width="25"
-                                height="25"
-                                className="w-7 h-7 cursor-pointer"
-                                loading="lazy"
-                            />
-                            <img
-                                src={whatsapp}
-                                alt="Whatsapp"
-                                width="25"
-                                height="25"
-                                className="w-7 h-7 cursor-pointer"
-                                loading="lazy"
-                            />
+                            <a href="https://t.me/LIDERMEBELLUX">
+                                <img
+                                    src={telegram}
+                                    alt="Telegram"
+                                    width="25"
+                                    height="25"
+                                    className="w-7 h-7 cursor-pointer"
+                                    loading="lazy"
+                                />
+                            </a>
+                            <a href="https://wa.me/qr/4DDJNMUX6OH2F1">
+                                <img
+                                    src={whatsapp}
+                                    alt="Whatsapp"
+                                    width="25"
+                                    height="25"
+                                    className="w-7 h-7 cursor-pointer"
+                                    loading="lazy"
+                                />
+                            </a>
+                            <a href="https://www.instagram.com/lidermebellux_?igsh=bHQ2ZXphZm83MTE4">
+                                <img
+                                    src={vk}
+                                    alt="VK"
+                                    width="30"
+                                    height="30"
+                                    className="w-[30px] h-[30px] cursor-pointer"
+                                    loading="lazy"
+                                />
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -173,30 +184,36 @@ const Footer = () => {
             {/* Socials bottom */}
             <div className="pb-5 md:hidden">
                 <div className="flex gap-2 justify-center py-5">
-                    <img
-                        src={telegram}
-                        alt="Telegram"
-                        width="30"
-                        height="30"
-                        className="w-[30px] h-[30px] cursor-pointer"
-                        loading="lazy"
-                    />
-                    <img
-                        src={whatsapp}
-                        alt="Whatsapp"
-                        width="30"
-                        height="30"
-                        className="w-[30px] h-[30px] cursor-pointer"
-                        loading="lazy"
-                    />
-                    <img
-                        src={vk}
-                        alt="VK"
-                        width="30"
-                        height="30"
-                        className="w-[30px] h-[30px] cursor-pointer"
-                        loading="lazy"
-                    />
+                    <a href="https://t.me/LIDERMEBELLUX">
+                        <img
+                            src={telegram}
+                            alt="Telegram"
+                            width="30"
+                            height="30"
+                            className="w-[30px] h-[30px] cursor-pointer"
+                            loading="lazy"
+                        />
+                    </a>
+                    <a href="https://wa.me/qr/4DDJNMUX6OH2F1">
+                        <img
+                            src={whatsapp}
+                            alt="Whatsapp"
+                            width="30"
+                            height="30"
+                            className="w-[30px] h-[30px] cursor-pointer"
+                            loading="lazy"
+                        />
+                    </a>
+                    <a href="https://www.instagram.com/lidermebellux_?igsh=bHQ2ZXphZm83MTE4">
+                        <img
+                            src={vk}
+                            alt="VK"
+                            width="30"
+                            height="30"
+                            className="w-[30px] h-[30px] cursor-pointer"
+                            loading="lazy"
+                        />
+                    </a>
                 </div>
                 <div className="text-white text-center">
                     <p className="font-oswald">Yangiliklarga obuna bo'ling</p>

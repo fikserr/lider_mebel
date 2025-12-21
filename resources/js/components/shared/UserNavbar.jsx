@@ -8,7 +8,8 @@ import {
 import { ImStarEmpty } from "react-icons/im";
 import { RiCloseLargeFill } from "react-icons/ri";
 import { BiUser } from "react-icons/bi";
-import Logo from "@images/LogoLM.avif";
+import Logo from "@images/logoLm.png";
+
 
 const UserNavbar = () => {
     const [searchInputVisible, setSearchInputVisible] = useState(false);
@@ -50,11 +51,10 @@ const UserNavbar = () => {
                             onClick={toggleMobileSearch}
                         />
                         <div
-                            className={`absolute top-12 left-10 sm428:left-10 transition-all duration-200 ease-in transform origin-top ${
-                                isMobileSearchOpen
+                            className={`absolute top-12 left-10 sm428:left-10 transition-all duration-200 ease-in transform origin-top ${isMobileSearchOpen
                                     ? "scale-y-10 opacity-100"
                                     : "scale-y-10 opacity-0"
-                            }`}
+                                }`}
                         >
                             <div className="flex items-center px-3 py-1 rounded-2xl bg-gray-800">
                                 <input
@@ -77,9 +77,8 @@ const UserNavbar = () => {
 
                 {/* SIDEBAR */}
                 <div
-                    className={`fixed top-0 left-0 w-64 h-full bg-gray-800 text-white z-50 p-4 transform transition-transform duration-500 ${
-                        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-                    }`}
+                    className={`fixed top-0 left-0 w-64 h-full bg-gray-800 text-white z-50 px-4 py-8 transform transition-transform duration-500 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+                        }`}
                 >
                     <div className="flex justify-between items-center">
                         <button
@@ -90,7 +89,7 @@ const UserNavbar = () => {
                                 src={Logo}
                                 alt="Logo"
                                 loading="lazy"
-                                className="w-24 h-14"
+                                className="w-[120px] h-auto pl-4"
                             />
                         </button>
                         <button
@@ -101,6 +100,7 @@ const UserNavbar = () => {
                             <RiCloseLargeFill />
                         </button>
                     </div>
+
                     <div className="space-y-2 mt-10">
                         {/* <Link href={`/category/3`} aria-label="Short">
                             <SidebarButton label="Kiyimlar" />
@@ -124,7 +124,7 @@ const UserNavbar = () => {
                 </div>
 
                 {/* LOGO */}
-                <div className="flex items-center gap-10">
+                <div className="flex items-center gap-10 py-4">
                     <HiOutlineMenuAlt4
                         className="hidden md:hidden xl:hidden"
                         style={{
@@ -139,7 +139,8 @@ const UserNavbar = () => {
                             src={Logo}
                             alt="Company Logo"
                             loading="lazy"
-                            className="w-20 md:w-28 h-auto md:pr-5"
+                            className="w-[120px] md:w-[150px] h-auto md:pr-5"
+
                         />
                     </Link>
                 </div>
@@ -226,11 +227,10 @@ const UserNavbar = () => {
                         </Link>
                     )}
                     <div
-                        className={`absolute -inset-2top-0 right-[111px] xl:right-[135px] transition-all duration-200 ease-in transform origin-top ${
-                            searchInputVisible
+                        className={`absolute -inset-2top-0 right-[111px] xl:right-[135px] transition-all duration-200 ease-in transform origin-top ${searchInputVisible
                                 ? "scale-y-10 opacity-100"
                                 : "scale-y-10 opacity-0"
-                        }`}
+                            }`}
                     >
                         <div className="md:flex items-center px-3 py-1 rounded-2xl bg-gray-800 hidden">
                             <input

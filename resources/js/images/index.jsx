@@ -1,11 +1,11 @@
 import iphone12 from '@images/group329rb.avif'
-import iphone13 from '@images/Group329.avif'
+import iphone13 from '@images/sofa.png'
 import inbox from '@images/inbox.avif'
 import user from '@images/user.avif'
 import check from '@images/check.avif'
-import Blog1 from '@images/blog_img1.avif'
-import Blog2 from '@images/blog_img2.avif'
-import Blog3 from '@images/blog_img3.avif'
+import Blog1 from '@images/spKomp1.jpeg'
+import Blog2 from '@images/spKomp2.webp'
+import Blog3 from '@images/spKomp3.jpg'
 
 export {
     iphone12,

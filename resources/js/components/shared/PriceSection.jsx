@@ -25,12 +25,8 @@ const PriceSection = () => {
                                     Narxni hisoblash
                                 </h1>
                                 <p className="font-oswald text-center sm:text-xl lg:text-2xl text-slate-800">
-                                    Agar siz qidirayotgan narsangizni topa
-                                    olmasangiz, har doim Poizon bozorida
-                                    buyurtma narxini avtomatik hisoblash, shu
-                                    jumladan xizmat komissiyasi va yetkazib
-                                    berishdan foydalanishingiz mumkin
-                                </p>
+                                    Agar siz izlayotgan mebel mahsulotingizni saytdan topa olmasangiz, biz orqali individual buyurtma berishingiz mumkin.
+                                    Buyurtma narxi avtomatik tarzda hisoblanadi va unga ishlab chiqarish, xizmat haqi hamda yetkazib berish xarajatlari kiritiladi.                                </p>
                             </div>
 
                             {/* iPhone 12 - for Tablet Only */}
@@ -53,8 +49,7 @@ const PriceSection = () => {
                                 </span>
 
                                 <span className="font-oswald sm:text-xl text-slate-800">
-                                    Poizon ilovasini qanday o'rnatish haqida
-                                    batafsil, bosqichma-bosqich maqola
+                                    Qaysi mebel turini xohlayotganingizni aniqlang ( shikaf, yotoqxona mebeli va boshqalar).
                                 </span>
                             </div>
 
@@ -64,9 +59,7 @@ const PriceSection = () => {
                                 </p>
 
                                 <p className="font-oswald sm:text-xl text-slate-800">
-                                    Qaysi mahsulotni sotib olishni
-                                    xohlayotganingizni bizga Telegram yoki
-                                    WhatsApp orqali yozing
+                                    Buyurtma tafsilotlarini Telegram yoki WhatsApp orqali bizga yuboring — o‘lcham, dizayn va qo‘shimcha talablar bilan birga.
                                 </p>
                             </div>
                         </div>
@@ -85,9 +78,9 @@ const PriceSection = () => {
                         <img
                             src={iphone13}
                             alt="iPhone 13"
-                            width={200}
+                            width={600}
                             height={400} // taxminiy original aspect ratio
-                            className="w-[200px] h-[400px] object-contain"
+                            className="w-[600px] h-[750px] object-center object-contain"
                         />
                     </div>
                 </div>
