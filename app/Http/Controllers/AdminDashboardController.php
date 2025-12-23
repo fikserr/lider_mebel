@@ -24,16 +24,29 @@ class AdminDashboardController extends Controller
         // 💰 Sotuvlar (FAOL orderlar bo‘yicha)
         $salesCount = Order::where('status', 'completed')->count();
 
-        // 💰 Agar JAMI SUMMA kerak bo‘lsa (ixtiyoriy)
-        // $salesSum = Order::where('status', 'completed')->sum('total_price');
-        $monthlySales = Order::select(
-            DB::raw('MONTH(created_at) as month'),
-            DB::raw('COUNT(*) as total')
-        )
-        ->where('status', 'completed') // 👈 muhim
-        ->groupBy('month')
-        ->orderBy('month')
-        ->get();
+        // DB driver olish
+        $driver = DB::getDriverName();
+
+        if ($driver === 'sqlite') {
+            $monthlySales = Order::select(
+                DB::raw("strftime('%m', created_at) as month"),
+                DB::raw('COUNT(*) as total')
+            )
+            ->where('status', 'completed')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+        } else {
+            // MySQL, PostgreSQL va boshqalar
+            $monthlySales = Order::select(
+                DB::raw("MONTH(created_at) as month"),
+                DB::raw('COUNT(*) as total')
+            )
+            ->where('status', 'completed')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+        }
 
         return Inertia::render('admin/dashboard', [
             'stats' => [
@@ -41,7 +54,7 @@ class AdminDashboardController extends Controller
                 'orders'   => $ordersCount,
                 'products' => $productsCount,
                 'sales'    => $salesCount,
-                'monthlySales'  => $monthlySales, // agar frontendda ishlatsang
+                'monthlySales'  => $monthlySales,
             ]
         ]);
     }

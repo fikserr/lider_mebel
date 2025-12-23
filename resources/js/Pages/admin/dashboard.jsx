@@ -16,7 +16,7 @@ const lineChartData = [
 
 const AdminDashboard = () => {
   const { stats } = usePage().props;
-  console.log(stats.users, stats.orders, stats.products, stats.sales,stats.monthlySales);
+  console.log(stats.users, stats.orders, stats.products, stats.sales, stats.monthlySales);
 
   return (
     <div className="px-5">

@@ -5,6 +5,7 @@ const FilterSidebar = ({
     categories = [],
     variantsColors = [],
     variantsSizes = [],
+    selectedCategory = null,
     onPriceChange = () => { },
     onSizeChange = () => { },
     onCategoryChange = () => { },
@@ -12,12 +13,14 @@ const FilterSidebar = ({
     onColorChange = () => { },
     onClearFilters = () => { }
 }) => {
-    const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedSizes, setSelectedSizes] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [selectedColors, setSelectedColors] = useState([]);
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
+
+    console.log('FilterSidebar categories:', categories);
+    console.log('FilterSidebar selectedCategory:', selectedCategory);
 
     const toggleArrayItem = (arr, setArr, val, callback) => {
         const updated = arr.includes(val) ? arr.filter(i => i !== val) : [...arr, val];
@@ -25,122 +28,151 @@ const FilterSidebar = ({
         callback && callback(updated);
     };
 
+    const handleClearFilters = () => {
+        setSelectedSizes([]);
+        setSelectedBrands([]);
+        setSelectedColors([]);
+        setMinPrice('');
+        setMaxPrice('');
+        onClearFilters();
+    };
+
     return (
-        <div>
+        <div className="bg-white rounded-lg shadow-sm p-4">
             {/* Tozalash */}
             <button
-                className="w-full text-center mt-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                onClick={onClearFilters}
+                className="w-full text-center py-2 bg-gray-200 rounded hover:bg-gray-300 font-medium transition-colors"
+                onClick={handleClearFilters}
             >
                 Barcha filtrlarni tozalash
             </button>
-            {/* Kategoriyalar */}
-            <div className="border rounded-md p-2 mt-3">
-                <h2
-                    
-                    className="mb-2 font-semibold font-oswald text-2xl"
-                >
-                    Kategoriyalar
-                </h2>
 
-                {categories.map(cat => (
-                    <button
-                        key={cat.id}
-                        className={`p-1 rounded-md w-full text-left mb-1
-            ${selectedCategory === cat.name ? 'bg-black text-white' : 'bg-white text-black'}`}
-                        onClick={() => {
-                            if (cat.id === cat.id) {
-                                window.location.href = `/category/${cat.id}`;
-                            } else {
-                                setSelectedCategory(selectedCategory === cat.name ? null : cat.name);
-                                onCategoryChange(cat.name);
-                            }
-                        }}
-                    >
-                        {cat.name}
-                    </button>
-                ))}
-            </div>
+            {/* Kategoriyalar */}
+            {categories.length > 0 && (
+                <div className="border rounded-md p-3 mt-4">
+                    <h2 className="mb-3 font-semibold font-oswald text-xl">
+                        Kategoriyalar ({categories.length})
+                    </h2>
+                    <div className="space-y-1">
+                        {categories.map(cat => (
+                            <button
+                                key={cat.id}
+                                className={`p-2 rounded-md w-full text-left transition-colors
+                                    ${selectedCategory === cat.id 
+                                        ? 'bg-black text-white' 
+                                        : 'bg-gray-50 hover:bg-gray-100 text-black'}`}
+                                onClick={() => {
+                                    // Kategoriya bosilganda to'g'ridan-to'g'ri o'sha sahifaga o'tish
+                                    window.location.href = `/category/${cat.id}`;
+                                }}
+                            >
+                                {cat.name}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* Narx filteri */}
-            <div className="border rounded-md p-2 my-3">
-                <h2  className="mb-2 font-semibold font-oswald text-2xl">Narx bo‘yicha filter</h2>
-                <div className="flex items-center space-x-1">
+            <div className="border rounded-md p-3 my-4">
+                <h2 className="mb-3 font-semibold font-oswald text-xl">
+                    Narx bo'yicha filter
+                </h2>
+                <div className="flex items-center gap-2">
                     <input
                         type="number"
-                        className="w-1/2 px-1 outline-none"
-                        placeholder="Minimal narx"
+                        className="w-full px-2 py-2 border rounded outline-none focus:border-blue-500"
+                        placeholder="Min"
                         value={minPrice}
                         onChange={e => setMinPrice(e.target.value)}
                     />
-                    <span>-</span>
+                    <span className="text-gray-400 font-bold">-</span>
                     <input
                         type="number"
-                        className="w-1/2 px-1 outline-none"
-                        placeholder="Maksimal narx"
+                        className="w-full px-2 py-2 border rounded outline-none focus:border-blue-500"
+                        placeholder="Max"
                         value={maxPrice}
                         onChange={e => setMaxPrice(e.target.value)}
                     />
                 </div>
                 <button
-                    className="bg-black text-white w-full rounded py-1 mt-5"
+                    className="bg-black text-white w-full rounded py-2 mt-3 hover:bg-gray-800 transition-colors"
                     onClick={() => onPriceChange({ minPrice, maxPrice })}
                 >
-                    Filter qo‘llash
+                    Qo'llash
                 </button>
             </div>
 
-            {/* O‘lchamlar */}
-            <div className="border p-2 rounded-md my-3">
-                <h2  className="mb-2 font-semibold font-oswald text-2xl">O‘lchamlar</h2>
-                <div className="grid grid-cols-4 gap-2">
-                    {variantsSizes.map(size => (
-                        <button
-                            key={size}
-                            className={`border rounded p-2 text-sm cursor-pointer
-                                ${selectedSizes.includes(size) ? 'bg-black text-white' : 'bg-white text-black'}`}
-                            onClick={() => toggleArrayItem(selectedSizes, setSelectedSizes, size, onSizeChange)}
-                        >
-                            {size}
-                        </button>
-                    ))}
+            {/* O'lchamlar */}
+            {variantsSizes.length > 0 && (
+                <div className="border p-3 rounded-md my-4">
+                    <h2 className="mb-3 font-semibold font-oswald text-xl">
+                        O'lchamlar
+                    </h2>
+                    <div className="grid grid-cols-4 gap-2">
+                        {variantsSizes.map(size => (
+                            <button
+                                key={size}
+                                className={`border rounded p-2 text-sm cursor-pointer transition-colors
+                                    ${selectedSizes.includes(size) 
+                                        ? 'bg-black text-white border-black' 
+                                        : 'bg-white text-black border-gray-300 hover:border-black'}`}
+                                onClick={() => toggleArrayItem(selectedSizes, setSelectedSizes, size, onSizeChange)}
+                            >
+                                {size}
+                            </button>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Ranglar */}
-            <div className="border rounded-md p-2 my-3">
-                <h2  className="font-semibold mb-2 font-oswald text-2xl">Ranglar</h2>
-                <div className="grid grid-cols-4 gap-2">
-                    {variantsColors.map(color => (
-                        <button
-                            key={color}
-                            className={`border rounded p-2 text-sm cursor-pointer capitalize
-                    ${selectedColors.includes(color) ? 'bg-black text-white' : 'bg-white text-black'}`}
-                            onClick={() => toggleArrayItem(selectedColors, setSelectedColors, color, onColorChange)}
-                        >
-                            {color}
-                        </button>
-                    ))}
+            {variantsColors.length > 0 && (
+                <div className="border rounded-md p-3 my-4">
+                    <h2 className="font-semibold mb-3 font-oswald text-xl">
+                        Ranglar
+                    </h2>
+                    <div className="grid grid-cols-3 gap-2">
+                        {variantsColors.map(color => (
+                            <button
+                                key={color}
+                                className={`border rounded p-2 text-xs cursor-pointer capitalize transition-colors
+                                    ${selectedColors.includes(color) 
+                                        ? 'bg-black text-white border-black' 
+                                        : 'bg-white text-black border-gray-300 hover:border-black'}`}
+                                onClick={() => toggleArrayItem(selectedColors, setSelectedColors, color, onColorChange)}
+                            >
+                                {color}
+                            </button>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Brendlar */}
-            <div className="border rounded-md p-2 mb-5">
-                <h2  className="mb-2 font-semibold font-oswald text-2xl">Brendlar</h2>
-                {brands.map(brand => (
-                    <button
-                        key={brand}
-                        className={`p-1 rounded-md w-full text-left mb-1
-                ${selectedBrands === brand ? 'bg-black text-white' : 'bg-white text-black'}`}
-                        onClick={() => {
-                            setSelectedBrands(selectedBrands === brand ? null : brand);
-                            onBrandChange(brand);
-                        }}
-                    >
-                        {brand}
-                    </button>
-                ))}
-            </div>
+            {brands.length > 0 && (
+                <div className="border rounded-md p-3 mb-4">
+                    <h2 className="mb-3 font-semibold font-oswald text-xl">
+                        Brendlar
+                    </h2>
+                    <div className="space-y-1">
+                        {brands.map(brand => (
+                            <button
+                                key={brand}
+                                className={`p-2 rounded-md w-full text-left transition-colors
+                                    ${selectedBrands.includes(brand) 
+                                        ? 'bg-black text-white' 
+                                        : 'bg-gray-50 hover:bg-gray-100 text-black'}`}
+                                onClick={() => {
+                                    toggleArrayItem(selectedBrands, setSelectedBrands, brand, onBrandChange);
+                                }}
+                            >
+                                {brand}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
