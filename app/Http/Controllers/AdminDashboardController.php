@@ -23,7 +23,6 @@ class AdminDashboardController extends Controller
 
         // 💰 Sotuvlar (FAOL orderlar bo‘yicha)
         $salesCount = Order::where('status', 'completed')->count();
-
         // 💰 Agar JAMI SUMMA kerak bo‘lsa (ixtiyoriy)
         // $salesSum = Order::where('status', 'completed')->sum('total_price');
         $monthlySales = Order::select(
