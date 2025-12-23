@@ -5,9 +5,9 @@ const OrderCheck = ({ data }) => {
 
     return (
         <div className="max-w-[280px] text-[10px] font-mono ">
-            <h2 className="text-center text-[14px] font-bold">STROY LIGHT</h2>
+            <h2 className="text-center text-[14px] font-bold">LIDER MEBEL</h2>
             <p className="text-center">YANGI BOZOR XITOY QATOR 5-BLOK 46-DO'KON</p>
-            <p className="text-center mb-1">Tel: +998910900070</p>
+            <p className="text-center mb-1">Tel: +998 98 001 10 11</p>
             <p className="text-center text-gray-500 text-[9px] mb-2">Kamchiliklar haqida 3 kun ichida xabar bering</p>
 
             <div className="flex justify-between mb-1">

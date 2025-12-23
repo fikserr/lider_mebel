@@ -88,26 +88,26 @@ const CartPage = ({ cartItems, address }) => {
                     return (
                         <div
                             key={item.id}
-                            className="border w-full rounded-lg p-4 flex items-center justify-between"
+                            className="border w-full rounded-lg p-2 flex items-center justify-between"
                         >
                             <div className="flex items-start gap-4">
                                 <img
                                     src={`/storage/${item.product?.photo1}`}
                                     loading="lazy"
                                     alt={item.product?.product_name}
-                                    className="w-20 h-20 sm:w-32 sm:h-32 object-cover rounded"
+                                    className="w-20 sm428:w-28 sm428:h-28 h-24 sm:w-32 sm:h-32 object-cover rounded"
                                 />
                                 <div className="space-y-1">
-                                    <h2 className="font-semibold text-xl">
+                                    <h2 className="font-semibold sm428:text-xl lg:text-base xl:text-xl">
                                         {item.product?.product_name}
                                     </h2>
-                                    <p className="text-sm text-gray-500">
+                                    <p className="text-xs sm428:text-sm text-gray-500">
                                         Size: {selectedSize}
                                     </p>
-                                    <p className="text-sm text-gray-500">
+                                    <p className="text-xs sm428:text-sm text-gray-500">
                                         Color: {selectedColor}
                                     </p>
-                                    <p className="text-sm text-gray-500">
+                                    <p className="text-xs sm428:text-sm text-gray-500">
                                         Narxi: {price.toLocaleString()} so‘m
                                     </p>
                                 </div>
