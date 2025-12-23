@@ -123,7 +123,7 @@ const CategoryProducts = ({ category, products = [], categories = [] }) => {
           <p className="text-gray-600 ">{filteredProducts.length} ta mahsulot</p>
         </div>
 
-        <div className="flex gap-6">
+        <div className="flex gap-6 2xl:gap-32">
           {/* SIDEBAR - Desktop only */}
           <aside className="hidden xl:block w-64 flex-shrink-0">
             <div className="sticky top-20">

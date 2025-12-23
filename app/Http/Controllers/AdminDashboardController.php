@@ -22,7 +22,7 @@ class AdminDashboardController extends Controller
         $productsCount = Product::count();
 
         // 💰 Sotuvlar (FAOL orderlar bo‘yicha)
-        $salesCount = Order::where('status', 'completed')->count();
+        $salesCount = Order::where('status', 'success')->count();
 
         // DB driver olish
         $driver = DB::getDriverName();
@@ -32,7 +32,7 @@ class AdminDashboardController extends Controller
                 DB::raw("strftime('%m', created_at) as month"),
                 DB::raw('COUNT(*) as total')
             )
-            ->where('status', 'completed')
+            ->where('status', 'success')
             ->groupBy('month')
             ->orderBy('month')
             ->get();
@@ -42,7 +42,7 @@ class AdminDashboardController extends Controller
                 DB::raw("MONTH(created_at) as month"),
                 DB::raw('COUNT(*) as total')
             )
-            ->where('status', 'completed')
+            ->where('status', 'success')
             ->groupBy('month')
             ->orderBy('month')
             ->get();

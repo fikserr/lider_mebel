@@ -126,7 +126,8 @@ export default {
     		md992: '992px',
     		lg: '1024px',
     		xl: '1280px',
-    		'2xl': '1536px'
+			'1xl': '1500px',
+    		'2xl': '1880px'
     	}
     },
     plugins: [

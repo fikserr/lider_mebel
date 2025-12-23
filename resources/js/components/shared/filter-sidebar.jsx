@@ -38,7 +38,7 @@ const FilterSidebar = ({
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-sm p-4">
+        <div className="bg-white rounded-lg shadow-sm 2xl:w-[350px]">
             {/* Tozalash */}
             <button
                 className="w-full text-center py-2 bg-gray-200 rounded hover:bg-gray-300 font-medium transition-colors"

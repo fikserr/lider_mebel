@@ -1,10 +1,10 @@
 import Watch from '@images/appleWatch.svg'
 import { IoMdTrendingDown, IoMdTrendingUp } from "react-icons/io";
 import { ImStarEmpty } from "react-icons/im";
-import Group from '@images/groupIcon.svg';
-import Order from '@images/orderIcon.svg';
-import Sales from '@images/salesIcon.svg';
-import Pending from '@images/pendingIcon.svg';
+// import Group from '@images/groupIcon.svg';
+// import Order from '@images/orderIcon.svg';
+// import Sales from '@images/salesIcon.svg';
+// import Pending from '@images/pendingIcon.svg';
 
 export const favoriteProducts = [
     {
@@ -170,52 +170,52 @@ export const homeCard = [
     { id: 12, title: "Product nomi", price: "Product narxi" },
 ];
 
-export const cards = [
-    {
-        title: "Total Users",
-        value: 40689,
-        diff: "8.5%",
-        icon: Group,
-        iconUp: <IoMdTrendingUp />,
-        iconStyle: "bg-[rgb(228,228,255)]",
-        info: "Up from yesterday",
-        isCurrency: false,
-        chartColor: "text-green-500",
-    },
-    {
-        title: "Total Order",
-        value: 10293,
-        diff: "1.3%",
-        icon: Order,
-        iconUp: <IoMdTrendingUp />,
-        iconStyle: "bg-[rgb(254,242,214)]",
-        info: "Up from last week",
-        isCurrency: false,
-        chartColor: "text-green-500",
-    },
-    {
-        title: "Total Sales",
-        value: 89000,
-        diff: "4.3%",
-        icon: Sales,
-        iconUp: <IoMdTrendingDown />,
-        iconStyle: "bg-[rgb(217,247,231)]",
-        info: "Down from yesterday",
-        isCurrency: true,
-        chartColor: "text-red-500",
-    },
-    {
-        title: "Total Products",
-        value: 2040,
-        diff: "1.8%",
-        icon: Pending,
-        iconUp: <IoMdTrendingUp />,
-        iconStyle: "bg-[rgb(255,222,210)]",
-        info: "Up from yesterday",
-        isCurrency: false,
-        chartColor: "text-green-500",
-    },
-];
+// export const cards = [
+//     {
+//         title: "Total Users",
+//         value: 40689,
+//         diff: "8.5%",
+//         icon: Group,
+//         iconUp: <IoMdTrendingUp />,
+//         iconStyle: "bg-[rgb(228,228,255)]",
+//         info: "Up from yesterday",
+//         isCurrency: false,
+//         chartColor: "text-green-500",
+//     },
+//     {
+//         title: "Total Order",
+//         value: 10293,
+//         diff: "1.3%",
+//         icon: Order,
+//         iconUp: <IoMdTrendingUp />,
+//         iconStyle: "bg-[rgb(254,242,214)]",
+//         info: "Up from last week",
+//         isCurrency: false,
+//         chartColor: "text-green-500",
+//     },
+//     {
+//         title: "Total Sales",
+//         value: 89000,
+//         diff: "4.3%",
+//         icon: Sales,
+//         iconUp: <IoMdTrendingDown />,
+//         iconStyle: "bg-[rgb(217,247,231)]",
+//         info: "Down from yesterday",
+//         isCurrency: true,
+//         chartColor: "text-red-500",
+//     },
+//     {
+//         title: "Total Products",
+//         value: 2040,
+//         diff: "1.8%",
+//         icon: Pending,
+//         iconUp: <IoMdTrendingUp />,
+//         iconStyle: "bg-[rgb(255,222,210)]",
+//         info: "Up from yesterday",
+//         isCurrency: false,
+//         chartColor: "text-green-500",
+//     },
+// ];
 
 export const shoes = [
     { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
