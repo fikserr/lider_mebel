@@ -1,164 +1,221 @@
 import { useState, useMemo } from "react";
 import { Link, Head } from "@inertiajs/react";
 import { HiOutlineChevronLeft } from "react-icons/hi";
+import FilterModal from "@/components/shared/filter-modal";
+import FilterSidebar from "@/components/shared/filter-sidebar";
 
-const CategoryProducts = ({ category, products }) => {
+const CategoryProducts = ({ category, products = [], categories = [] }) => {
   const [sortBy, setSortBy] = useState("default");
 
-  // Debug uchun
-  // console.log('Category:', category);
-  // console.log('Products:', products);
-  // console.log('Products length:', products?.length);
+  // Filter state'lari
+  const [selectedCategory, setSelectedCategory] = useState(category?.id ?? null);
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [priceRange, setPriceRange] = useState({ minPrice: "", maxPrice: "" });
+  
+  // Debug
+  console.log('=== CategoryProducts Debug ===');
+  console.log('category:', category);
+  console.log('categories:', categories);
+  console.log('categories.length:', categories.length);
+  console.log('products:', products);
+  console.log('products.length:', products.length);
+  
+  /* ================== BRAND ================== */
+  const allBrands = useMemo(() => {
+    return [...new Set(products.map(p => p.brend).filter(Boolean))];
+  }, [products]);
 
-  // Mahsulotlarni saralash
-  const sortedProducts = useMemo(() => {
-    if (!products || products.length === 0) return [];
+  /* ================== COLORS ================== */
+  const allColors = useMemo(() => {
+    const list = [];
+    products.forEach(p => {
+      p.variants?.forEach(v => {
+        v.colors?.forEach(c => list.push(c));
+      });
+    });
+    return [...new Set(list)];
+  }, [products]);
 
-    let sorted = [...products];
+  /* ================== SIZES ================== */
+  const allSizes = useMemo(() => {
+    const list = [];
+    products.forEach(p => {
+      p.variants?.forEach(v => {
+        v.sizes?.forEach(s => list.push(s));
+      });
+    });
+    return [...new Set(list)];
+  }, [products]);
 
-    switch (sortBy) {
-      case "name-asc":
-        return sorted.sort((a, b) => a.product_name.localeCompare(b.product_name));
-      case "name-desc":
-        return sorted.sort((a, b) => b.product_name.localeCompare(a.product_name));
-      case "newest":
-        return sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      case "oldest":
-        return sorted.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-      default:
-        return sorted;
+  console.log('allBrands:', allBrands);
+  console.log('allColors:', allColors);
+  console.log('allSizes:', allSizes);
+
+  /* ================== FILTER + SORT ================== */
+  const filteredProducts = useMemo(() => {
+    let result = [...products];
+
+    // Category filter
+    if (selectedCategory) {
+      result = result.filter(p => p.category_id === selectedCategory);
     }
-  }, [products, sortBy]);
+
+    // Brand filter
+    if (selectedBrands.length) {
+      result = result.filter(p => selectedBrands.includes(p.brend));
+    }
+
+    // Colors filter
+    if (selectedColors.length) {
+      result = result.filter(p =>
+        p.variants?.some(v =>
+          v.colors?.some(c => selectedColors.includes(c))
+        )
+      );
+    }
+
+    // Sizes filter
+    if (selectedSizes.length) {
+      result = result.filter(p =>
+        p.variants?.some(v =>
+          v.sizes?.some(s => selectedSizes.includes(s))
+        )
+      );
+    }
+
+    // Price filter
+    if (priceRange.minPrice || priceRange.maxPrice) {
+      const min = Number(priceRange.minPrice || 0);
+      const max = Number(priceRange.maxPrice || Infinity);
+      result = result.filter(p =>
+        p.variants?.some(v => v.price >= min && v.price <= max)
+      );
+    }
+
+    return result;
+  }, [products, selectedCategory, selectedBrands, selectedColors, selectedSizes, priceRange]);
+
+  const clearFilters = () => {
+    setSelectedCategory(category?.id ?? null);
+    setSelectedBrands([]);
+    setSelectedColors([]);
+    setSelectedSizes([]);
+    setPriceRange({ minPrice: "", maxPrice: "" });
+    setSortBy("default");
+  };
 
   return (
     <>
-      <Head title={`${category.name} - Mahsulotlar`} />
+      <Head title={category.name} />
 
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="bg-white shadow-sm mt-14">
-          <div className="px-5 md:px-10 xl:px-20 py-6">
-            <Link
-              href="/"
-              className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
-            >
-              <HiOutlineChevronLeft className="mr-2" />
-              Bosh sahifaga qaytish
-            </Link>
+      <div className="px-5 xl:px-20 mt-20">
+        <Link
+          href="/"
+          className="inline-flex items-center mb-4 hover:opacity-70"
+        >
+          <HiOutlineChevronLeft className="mr-2 text-xl" />
+          <h1 className="text-3xl md:text-4xl font-bold">{category.name}</h1>
+        </Link>
 
-            <div className="flex items-center gap-4">
-              {category.image && (
-                <img
-                  src={`/storage/${category.image}`}
-                  alt={category.name}
-                  className="w-20 h-20 object-cover rounded-lg"
-                />
-              )}
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold font-oswald">
-                  {category.name}
-                </h1>
-                <p className="text-gray-600 mt-1">
-                  {sortedProducts.length} ta mahsulot
-                </p>
-              </div>
-            </div>
-          </div>
+        <div className="mb-6 pl-7">
+          <p className="text-gray-600 ">{filteredProducts.length} ta mahsulot</p>
         </div>
 
-        <div className="px-5 md:px-10 xl:px-20 py-8">
-          {/* Filters */}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-            <div className="flex flex-wrap gap-4 items-center">
-              <div className="w-full md:w-64">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Saralash
-                </label>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="border w-full border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+        <div className="flex gap-6 2xl:gap-32">
+          {/* SIDEBAR - Desktop only */}
+          <aside className="hidden xl:block w-64 flex-shrink-0">
+            <div className="sticky top-20">
+              <FilterSidebar
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onCategoryChange={setSelectedCategory}
+                brands={allBrands}
+                variantsColors={allColors}
+                variantsSizes={allSizes}
+                onBrandChange={setSelectedBrands}
+                onColorChange={setSelectedColors}
+                onSizeChange={setSelectedSizes}
+                onPriceChange={setPriceRange}
+                onClearFilters={clearFilters}
+              />
+            </div>
+          </aside>
+
+          {/* CONTENT */}
+          <div className="flex-1">
+            {/* Filter Modal - Mobile & Tablet only */}
+            <div className="xl:hidden">
+              <FilterModal
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onCategoryChange={setSelectedCategory}
+                brands={allBrands}
+                colors={allColors}
+                sizes={allSizes}
+                onBrandChange={setSelectedBrands}
+                onColorChange={setSelectedColors}
+                onSizeChange={setSelectedSizes}
+                onPriceChange={setPriceRange}
+              />
+            </div>
+
+            {/* Products Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
+              {filteredProducts.map(p => (
+                <Link
+                  key={p.id}
+                  href={`/detail/${p.id}`}
+                  className="bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300 group"
                 >
-                  <option value="default">Standart</option>
-                  <option value="name-asc">Nomi: A-Z</option>
-                  <option value="name-desc">Nomi: Z-A</option>
-                  <option value="newest">Eng yangi</option>
-                  <option value="oldest">Eng eski</option>
-                </select>
-              </div>
+                  <div className="overflow-hidden rounded-t-lg">
+                    <img
+                      src={`/storage/${p.photo1}`}
+                      alt={p.product_name}
+                      className="h-48 w-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = '/placeholder.png';
+                      }}
+                    />
+                  </div>
+                  <div className="p-3">
+                    <h3 className="font-semibold line-clamp-2 mb-1">{p.product_name}</h3>
+                    <p className="text-sm text-gray-500">{p.brend}</p>
+                    {p.variants?.[0]?.price && (
+                      <p className="text-sm font-bold mt-1">
+                        {p.variants[0].price.toLocaleString()} so'm
+                      </p>
+                    )}
+                  </div>
+                </Link>
+              ))}
             </div>
+
+            {/* Empty State */}
+            {!filteredProducts.length && (
+              <div className="text-center mt-16 py-12">
+                <div className="text-gray-400 mb-4">
+                  <svg className="mx-auto h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                  Mahsulotlar topilmadi
+                </h3>
+                <p className="text-gray-500">
+                  Filtr shartlariga mos mahsulot yo'q
+                </p>
+                <button
+                  onClick={clearFilters}
+                  className="mt-4 px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+                >
+                  Filtrlarni tozalash
+                </button>
+              </div>
+            )}
           </div>
-
-          {/* Products Grid */}
-          {sortedProducts.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {sortedProducts.map((product) => {
-                // To'g'ridan-to'g'ri photo1 dan foydalanish
-                const productImage = product.photo1 || product.photo2 || product.photo3;
-
-                // console.log(`Product ${product.id}:`, product.product_name);
-                // console.log('photo1:', product.photo1);
-                // console.log('productImage:', productImage);
-
-                return (
-                  <Link
-                    key={product.id}
-                    href={`/detail/${product.id}`}
-                    className="group bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-300"
-                  >
-                    <div className="overflow-hidden rounded-t-lg relative bg-gray-100">
-                      {productImage ? (
-                        <img
-                          src={`/storage/${productImage}`}
-                          alt={product.product_name}
-                          className="w-full h-48 md:h-64 object-cover group-hover:scale-110 transition-transform duration-300"
-                          onError={(e) => {
-                            console.error('Image load error:', productImage);
-                            e.target.onerror = null;
-                            e.target.parentElement.innerHTML = `
-                              <div class="w-full h-48 md:h-64 bg-gray-200 flex items-center justify-center">
-                                <span class="text-gray-400">Rasm yuklanmadi</span>
-                              </div>
-                            `;
-                          }}
-                        />
-                      ) : (
-                        <div className="w-full h-48 md:h-64 bg-gray-200 flex items-center justify-center">
-                          <span className="text-gray-400">Rasm yo'q</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="p-4">
-                      <h3 className="font-semibold text-sm md:text-base line-clamp-2 group-hover:text-blue-600 transition-colors  mb-2">
-                        {product.product_name}
-                      </h3>
-                      {product.brend && (
-                        <p className="text-xs text-gray-500 uppercase tracking-wide">
-                          {product.brend}
-                        </p>
-                      )}
-
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <div className="text-gray-400 mb-4">
-                <svg className="mx-auto h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">
-                Mahsulotlar topilmadi
-              </h3>
-              <p className="text-gray-500">
-                Bu kategoriyada hozircha mahsulotlar yo'q
-              </p>
-            </div>
-          )}
         </div>
       </div>
     </>

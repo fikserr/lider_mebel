@@ -33,8 +33,14 @@ const Home = ({ categories, banners, favorites }) => {
 
   const { url } = usePage();
   const searchParams = new URLSearchParams(url.split('?')[1]);
-  const searchQuery = searchParams.get('search') || '';
-  // console.log(categories);
+  const searchQuery = searchParams.get('search')?.toLowerCase() || '';
+
+  const filteredCategories = useMemo(() => {
+    if (!searchQuery) return categories;
+    return categories.filter(category =>
+      category.name.toLowerCase().includes(searchQuery)
+    );
+  }, [categories, searchQuery]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -60,8 +66,8 @@ const Home = ({ categories, banners, favorites }) => {
 
       <div className="px-5 md:px-10 xl:px-20 py-8">
         <h2 className="text-3xl font-bold font-oswald mb-6">Kategoriyalar</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {categories.map((category) => (
+        <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 1xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6">
+          {filteredCategories.map((category) => (
             <Link 
               key={category.id} 
               href={`/category/${category.id}`}

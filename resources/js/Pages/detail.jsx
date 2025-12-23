@@ -1,8 +1,10 @@
 import { useState, useEffect, useMemo, act } from "react";
 import { HiOutlineChevronRight } from "react-icons/hi";
+import { HiOutlineChevronLeft } from "react-icons/hi";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import OrderModal from "@/components/shared/orderModal";
+import { Link } from "@inertiajs/react";
 
 const Index = ({ detail }) => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -74,8 +76,8 @@ const Index = ({ detail }) => {
             return;
         }
         setProcessing(true);
-       
-        
+
+
         axios
             .post("/add-to-cart", {
                 product_id: detail.id,
@@ -106,6 +108,13 @@ const Index = ({ detail }) => {
 
     return (
         <div className="my-20 px-5 xl:px-32">
+            <Link
+                href="/"
+                className="inline-flex items-center mb-2 hover:opacity-70"
+            >
+                <HiOutlineChevronLeft className="mr-2 text-xl" />
+                <p className="font-bold text-2xl">Orqaga</p>
+            </Link>
             <div className="grid sm:grid-cols-2 gap-5 md:gap-10 xl:grid-cols-2">
                 {/* Rasm */}
                 <div className="border-b-blue-300 grid gap-4 border-b-2">
@@ -127,8 +136,8 @@ const Index = ({ detail }) => {
                                         loading="lazy"
                                         alt={`Product ${index + 1}`}
                                         className={`w-full h-[130px] object-cover rounded-lg cursor-pointer ${mainPhoto === photo
-                                                ? "ring-2 ring-blue-400"
-                                                : ""
+                                            ? "ring-2 ring-blue-400"
+                                            : ""
                                             }`}
                                         onClick={() => setMainPhoto(photo)}
                                     />
@@ -153,8 +162,8 @@ const Index = ({ detail }) => {
                                     setActiveColor(null);
                                 }}
                                 className={`border rounded-lg px-4 py-1 cursor-pointer ${activeSize === size
-                                        ? "bg-black text-white"
-                                        : "bg-gray-100 hover:bg-gray-200"
+                                    ? "bg-black text-white"
+                                    : "bg-gray-100 hover:bg-gray-200"
                                     }`}
                             >
                                 {size}
@@ -168,8 +177,8 @@ const Index = ({ detail }) => {
                                 key={index}
                                 onClick={() => setActiveColor(color)}
                                 className={`border rounded-full px-4 py-1 cursor-pointer ${activeColor === color
-                                        ? "bg-black text-white"
-                                        : "bg-gray-100 hover:bg-gray-200"
+                                    ? "bg-black text-white"
+                                    : "bg-gray-100 hover:bg-gray-200"
                                     }`}
                             >
                                 {color}
@@ -178,7 +187,7 @@ const Index = ({ detail }) => {
                     </div>
                     <div className="flex items-center justify-between mt-5">
                         <p
-                        className="font-oswald"
+                            className="font-oswald"
                         >
                             Narxi:{" "}
                             {(activeVariant?.price ?? detail.price)}{" "}

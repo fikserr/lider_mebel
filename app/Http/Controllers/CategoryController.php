@@ -12,6 +12,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
+
         return Inertia::render('admin/addProducts', [
             'categories' => $categories
         ]);
@@ -19,17 +20,15 @@ class CategoryController extends Controller
 
     public function homeCategories()
     {
-        $categories = Category::all();
         return Inertia::render('Home', [
-            'categories' => $categories
+            'categories' => Category::all()
         ]);
     }
 
     public function create()
     {
-        $categories = Category::all();
         return Inertia::render('admin/addCategory', [
-            'categoriesList' => $categories
+            'categoriesList' => Category::all()
         ]);
     }
 
@@ -40,54 +39,46 @@ class CategoryController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('categories', 'public');
-        }
+        $imagePath = $request->hasFile('image')
+            ? $request->file('image')->store('categories', 'public')
+            : null;
 
         Category::create([
             'name'  => $request->name,
             'image' => $imagePath,
         ]);
 
-        return redirect()->back()->with('success', 'Kategoriya muvaffaqiyatli qo\'shildi!');
+        return back()->with('success', 'Kategoriya muvaffaqiyatli qo‘shildi!');
     }
 
     /**
-     * Kategoriya bo'yicha mahsulotlarni ko'rsatish
+     * ✅ CATEGORY + FILTER ISHLAYDIGAN SHOW
      */
     public function show($id)
     {
-        // Kategoriyani topish
-        $category = Category::findOrFail($id);
-        
-        // Kategoriyaga tegishli mahsulotlarni olish
+        $category   = Category::findOrFail($id);
+        $categories = Category::all(); // 🔥 FILTER UCHUN MUHIM
+
         $products = Product::where('category_id', $id)
-            ->with('category')
+            ->with(['category', 'variants'])
             ->get()
-            ->map(function($product) {
-                // Photo1, photo2, photo3 ni bitta images array ga yig'ish
-                $photos = [];
-                if (!empty($product->photo1)) $photos[] = $product->photo1;
-                if (!empty($product->photo2)) $photos[] = $product->photo2;
-                if (!empty($product->photo3)) $photos[] = $product->photo3;
-                
-                $product->images = $photos;
-                
-                // Debug uchun
-                \Log::info('Product: ' . $product->product_name);
-                \Log::info('Photos array: ' . json_encode($photos));
-                
+            ->map(function ($product) {
+
+                // Rasmlar
+                $images = [];
+                if ($product->photo1) $images[] = $product->photo1;
+                if ($product->photo2) $images[] = $product->photo2;
+                if ($product->photo3) $images[] = $product->photo3;
+
+                $product->images = $images;
+
                 return $product;
             });
-        
-        // Debug uchun
-        \Log::info('Category ID: ' . $id);
-        \Log::info('Products count: ' . $products->count());
-        
+
         return Inertia::render('CategoryProducts', [
-            'category' => $category,
-            'products' => $products
+            'category'   => $category,
+            'categories' => $categories, // ✅ FILTER
+            'products'   => $products
         ]);
     }
 }

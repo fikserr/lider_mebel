@@ -4,9 +4,9 @@ const CheckView = ({ data }) => {
 
   return (
     <div className="w-full p-2 font-sans text-sm">
-      <h1 className="text-4xl font-extrabold text-center mb-2">STROY LIGHT</h1>
+      <h1 className="text-4xl font-extrabold text-center mb-2">LIDER MEBEL</h1>
       <p className="text-center">YANGI BOZOR XITOY QATOR 5-BLOK 46-DO'KON</p>
-      <p className="text-center mb-4">Telefon: +998910900070</p>
+      <p className="text-center mb-4">Telefon: +998 98 001 10 11</p>
 
       <div className="grid grid-cols-2 text-sm gap-y-1 mb-4">
         <p><strong>Mijoz:</strong> {data.address.first_name} {data.address.last_name}</p>
