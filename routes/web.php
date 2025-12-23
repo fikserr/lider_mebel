@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
@@ -45,10 +46,6 @@ Route::get('/test-email', function () {
 // 👤 Faqat USER (oddiy foydalanuvchi) uchun sahifalar
 Route::middleware([auth::class, IsUser::class])->group(function () {
     Route::get('/', [ProductController::class, 'userProduct'])->name('home');
-    
-    // Kategoriya sahifasi - YANGI ROUTE
-    Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
-    
     Route::get('/detail', fn() => inertia('detail'));
     Route::get('/detail/{id}', [ProductController::class, 'show'])->name('product.detail');
     Route::get('/profile', fn() => inertia('Profile'));
@@ -86,7 +83,7 @@ Route::middleware([auth::class, IsUser::class])->group(function () {
 // 🛠️ Admin uchun sahifalar
 Route::middleware(['auth', IsAdmin::class])->group(function () {
     // Dashboard
-    Route::get('/admin-dashboard', fn() => inertia('admin/dashboard'))->name('admin.dashboard');
+    Route::get('/admin-dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/orders/{id}', [OrderController::class, 'show'])->name('admin.orders.show');
     Route::get('/admin/orders/pos/{id}', [OrderController::class, 'showPos'])->name('admin.orders.showPos');
     

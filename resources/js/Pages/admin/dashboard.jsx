@@ -2,6 +2,7 @@ import { AppSidebar } from '@/components/shared/app-sidebar';
 import CountUp from '@/components/shared/countUp';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { cards } from '@/components/shared/lists'
+import { usePage } from '@inertiajs/react';
 
 const lineChartData = [
   { name: 'Jan', sales: 2400 },
@@ -14,6 +15,9 @@ const lineChartData = [
 ];
 
 const AdminDashboard = () => {
+  const { stats } = usePage().props;
+  console.log(stats.users, stats.orders, stats.products, stats.sales,stats.monthlySales);
+
   return (
     <div className="px-5">
       <AppSidebar />
@@ -43,7 +47,7 @@ const AdminDashboard = () => {
                 <div
                   className={`flex justify-center items-center p-5 rounded-[40%] ${card.iconStyle}`}
                 >
-                  <img src={card.icon} alt={card.title} loading="lazy"/>
+                  <img src={card.icon} alt={card.title} loading="lazy" />
                 </div>
               </div>
               <div className='flex items-center gap-2 text-lg'>
