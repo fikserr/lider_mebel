@@ -124,11 +124,11 @@ const AddAddress = ({ address }) => {
       </Link>
 
       <div className='grid grid-cols-1 lg:grid-cols-4 gap-5'>
-        <div className='col-span-4 my-5 px-10'>
+        <div className='col-span-4 my-5 px-3'>
           <div className='grid grid-cols-4 items-center pl-6'>
-            <h2 className='col-span-3 text-2xl font-oswald' >Joylashuv qo'shish</h2>
+            <h2 className='col-span-5 text-2xl mb-2 font-oswald' >Joylashuv qo'shish</h2>
           </div>
-          <form onSubmit={handleSubmit} className='grid p-5 gap-5'>
+          <form onSubmit={handleSubmit} className='grid gap-5'>
             <InputBlock label="Ismingiz:" name="first_name" value={formData.first_name} onChange={setFormData} error={errors.first_name} />
             <InputBlock label="Familiyangiz:" name="last_name" value={formData.last_name} onChange={setFormData} error={errors.last_name} />
             <InputBlock label="Ko'changiz:" name="street" value={formData.street} onChange={setFormData} className="sm:col-span-2" error={errors.street} />
