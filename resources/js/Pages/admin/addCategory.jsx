@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 
-const AddCategory = ({categoriesList}) => {
+const AddCategory = ({ categoriesList }) => {
   const { toast } = useToast();
 
-  
+
   /* ================= STATES ================= */
   const [name, setName] = useState('');
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
-console.log(categoriesList);
+  console.log(categoriesList);
 
   /* ================= FETCH ================= */
   const fetchCategories = async () => {
@@ -87,7 +87,7 @@ console.log(categoriesList);
 
         <form onSubmit={handleSubmit} className="space-y-6 max-w-xl">
 
-          <div className="flex justify-center">
+          <div className="flex justify-start pl-20">
             <div className="relative w-28 h-28">
               <div className="w-full h-full bg-slate-200 rounded-full overflow-hidden flex items-center justify-center">
                 {previewImage ? (
@@ -114,65 +114,23 @@ console.log(categoriesList);
             </div>
           </div>
 
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Kategoriya nomi"
-            className="border px-4 py-2 rounded w-full"
-            required
-          />
+          <div className='flex flex-col gap-5'>
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Kategoriya nomi"
+              className="border px-4 py-2 rounded w-1/2"
+              required
+            />
 
-          <button
-            disabled={loading}
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-          >
-            {loading ? 'Yuklanmoqda...' : 'Saqlash'}
-          </button>
+            <button
+              disabled={loading}
+              className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 max-w-[100px]"
+            >
+              {loading ? 'Yuklanmoqda...' : 'Saqlash'}
+            </button>
+          </div>
         </form>
-      </div>
-
-      {/* ===== TABLE ===== */}
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">Kategoriyalar</h2>
-
-        <table className="w-full border text-sm">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="border px-4 py-2">#</th>
-              <th className="border px-4 py-2">Rasm</th>
-              <th className="border px-4 py-2">Nomi</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {categories.length === 0 && (
-              <tr>
-                <td colSpan="3" className="py-4 text-center text-gray-500">
-                  Kategoriya yo‘q
-                </td>
-              </tr>
-            )}
-
-            {categories.map((cat, i) => (
-              <tr key={cat.id} className="text-center">
-                <td className="border px-4 py-2">{i + 1}</td>
-
-                <td className="border px-4 py-2">
-                  {cat.image && (
-                    <img
-                      src={`/storage/${cat.image}`}
-                      className="w-10 h-10 object-cover rounded-full mx-auto"
-                    />
-                  )}
-                </td>
-
-                <td className="border px-4 py-2">
-                  {cat.name}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
 
     </div>

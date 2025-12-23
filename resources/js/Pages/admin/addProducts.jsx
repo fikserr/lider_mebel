@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { useToast } from "@/hooks/use-toast";
+import { Plus, X } from "lucide-react";
 
 const AddProductForm = ({ categories }) => {
     const { toast } = useToast();
@@ -17,7 +18,7 @@ const AddProductForm = ({ categories }) => {
         photo1: null,
         photo2: null,
         photo3: null,
-        variants: [{ sizes: "", colors: "", price: "" }], // 👈 to‘g‘rilandi
+        variants: [], 
     });
 
     const handleChange = (e) => {
@@ -52,7 +53,7 @@ const AddProductForm = ({ categories }) => {
     const addVariant = () => {
         setData("variants", [
             ...data.variants,
-            { sizes: "", colors: "", price: "" }, // 👈 to‘g‘rilandi
+            { sizes: "", colors: "", price: "" },
         ]);
     };
 
@@ -75,14 +76,14 @@ const AddProductForm = ({ categories }) => {
                 setPreviewImages({ photo1: null, photo2: null, photo3: null });
                 toast({
                     title: "Success",
-                    description: "Mahsulot muvaffaqiyatli qo‘shildi",
+                    description: "Mahsulot muvaffaqiyatli qo'shildi",
                 });
                 window.location.href = "/admin-productStock";
             },
             onError: () => {
                 toast({
                     title: "Xatolik",
-                    description: "Ma'lumotlarni to‘ldirishda xatolik bor.",
+                    description: "Ma'lumotlarni to'ldirishda xatolik bor.",
                 });
             },
         });
@@ -174,87 +175,108 @@ const AddProductForm = ({ categories }) => {
                     />
                 </div>
 
-                {/* ✅ Variantlar bo‘limi */}
-                <div>
-                    <h2 className="text-xl font-semibold mb-2 mt-6">
-                        Mahsulot variantlari
-                    </h2>
-                    {data.variants.map((variant, index) => (
-                        <div
-                            key={index}
-                            className="flex gap-4 mb-2 items-center"
+                <div className="border-t pt-6">
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-xl font-semibold">
+                            Mahsulot variantlari
+                        </h2>
+                        <button
+                            type="button"
+                            onClick={addVariant}
+                            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105"
                         >
-                            <input
-                                type="text"
-                                placeholder="Razmerlar (e.g. S, M, L)"
-                                value={
-                                    Array.isArray(variant.sizes)
-                                        ? variant.sizes.join(", ")
-                                        : variant.sizes
-                                }
-                                onChange={(e) =>
-                                    handleVariantChange(
-                                        index,
-                                        "sizes",
-                                        e.target.value
-                                    )
-                                }
-                                className="border p-3 rounded w-1/3"
-                            />
+                            <Plus className="w-5 h-5" />
+                            Variant qo'shish
+                        </button>
+                    </div>
 
-                            <input
-                                type="text"
-                                placeholder="Ranglar (e.g. red, blue)"
-                                value={
-                                    Array.isArray(variant.colors)
-                                        ? variant.colors.join(", ")
-                                        : variant.colors
-                                }
-                                onChange={(e) =>
-                                    handleVariantChange(
-                                        index,
-                                        "colors",
-                                        e.target.value
-                                    )
-                                }
-                                className="border p-3 rounded w-1/3"
-                            />
+                    {data.variants.length > 0 && (
+                        <div className="space-y-3 mt-4">
+                            {data.variants.map((variant, index) => (
+                                <div
+                                    key={index}
+                                    className="flex gap-4 items-center bg-gray-50 p-4 rounded-lg border border-gray-200 hover:shadow-md transition-all"
+                                >
+                                    <div className="flex-1">
+                                        <input
+                                            type="text"
+                                            placeholder="Razmerlar (masalan: S, M, L)"
+                                            value={
+                                                Array.isArray(variant.sizes)
+                                                    ? variant.sizes.join(", ")
+                                                    : variant.sizes
+                                            }
+                                            onChange={(e) =>
+                                                handleVariantChange(
+                                                    index,
+                                                    "sizes",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="border p-3 rounded-lg w-full outline-none focus:ring-2 focus:ring-blue-300"
+                                        />
+                                    </div>
 
-                            <input
-                                type="number"
-                                placeholder="Narx (e.g. 100000)"
-                                value={variant.price}
-                                onChange={(e) =>
-                                    handleVariantChange(
-                                        index,
-                                        "price",
-                                        e.target.value
-                                    )
-                                }
-                                className="border p-3 rounded w-1/3"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => removeVariant(index)}
-                                className="text-red-600 text-xl font-bold"
-                            >
-                                ✕
-                            </button>
+                                    <div className="flex-1">
+                                        <input
+                                            type="text"
+                                            placeholder="Ranglar (masalan: qizil, ko'k)"
+                                            value={
+                                                Array.isArray(variant.colors)
+                                                    ? variant.colors.join(", ")
+                                                    : variant.colors
+                                            }
+                                            onChange={(e) =>
+                                                handleVariantChange(
+                                                    index,
+                                                    "colors",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="border p-3 rounded-lg w-full outline-none focus:ring-2 focus:ring-blue-300"
+                                        />
+                                    </div>
+
+                                    <div className="flex-1">
+                                        <input
+                                            type="number"
+                                            placeholder="Narx (masalan: 100000)"
+                                            value={variant.price}
+                                            onChange={(e) =>
+                                                handleVariantChange(
+                                                    index,
+                                                    "price",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="border p-3 rounded-lg w-full outline-none focus:ring-2 focus:ring-blue-300"
+                                        />
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => removeVariant(index)}
+                                        className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-all"
+                                    >
+                                        <X className="w-5 h-5" />
+                                    </button>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                    <button
-                        type="button"
-                        onClick={addVariant}
-                        className="mt-2 px-4 py-2 bg-green-600 text-white rounded"
-                    >
-                        ➕ Variant qo‘shish
-                    </button>
+                    )}
+                    {data.variants.length === 0 && (
+                        <div className="text-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                            <p className="text-gray-500">
+                                Hozircha variant qo'shilmagan. "Variant qo'shish" tugmasini bosing.
+                            </p>
+                        </div>
+                    )}
                 </div>
 
                 <button
                     type="submit"
                     disabled={processing}
-                    className="bg-blue-600 text-white px-4 py-2 rounded mt-6"
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg mt-6 font-semibold hover:shadow-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {processing ? "Saqlanmoqda..." : "💾 Saqlash"}
                 </button>
