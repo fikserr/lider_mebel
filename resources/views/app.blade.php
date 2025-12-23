@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="Prosys biznesingizni avtomatlashtiradigan va web dasturlar ishlab chiqadigan kompaniya. 1C integratsiyasi, mobil ilovalar va Telegram botlar yaratamiz.">
+<meta name="description" content="Lider Mebel — buyurtma asosida sifatli va zamonaviy mebellar. Oshxona, yotoqxona va ofis mebellari.">
     <meta name="robots" content="index, follow">
     <title>Lider Mebel Lux</title>
     {{-- Preload Google Fonts --}}
