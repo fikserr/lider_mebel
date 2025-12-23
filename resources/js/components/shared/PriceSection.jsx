@@ -17,32 +17,32 @@ const PriceSection = () => {
             <div className="w-full p-5 sm:p-8 xl:p-16 bg-[rgb(22,156,248)] rounded-lg flex flex-col gap-3 relative">
                 <div className="grid lg:grid-cols-5 md:grid-cols-4">
                     {/* Text Section */}
-                    <div className="col-span-3">
+                    <div className="col-span-3 md:col-span-4">
                         <div className="grid sm:grid-cols-3 md:gap-10">
                             {/* Title and Description */}
-                            <div className="flex flex-col sm:mb-2 lg:mb-10 gap-4 md:gap-10 col-span-3">
+                            <div className="flex flex-col sm:mb-2 lg:mb-10 gap-4 md:gap-10 col-span-2">
                                 <h1 className="font-oswald text-center text-5xl lg:text-7xl  text-slate-950">
                                     Narxni hisoblash
                                 </h1>
-                                <p className="font-oswald text-center sm:text-xl lg:text-2xl text-slate-800">
+                                <p className="font-oswald sm:text-xl lg:text-2xl text-slate-800">
                                     Agar siz izlayotgan mebel mahsulotingizni saytdan topa olmasangiz, biz orqali individual buyurtma berishingiz mumkin.
                                     Buyurtma narxi avtomatik tarzda hisoblanadi va unga ishlab chiqarish, xizmat haqi hamda yetkazib berish xarajatlari kiritiladi.                                </p>
                             </div>
 
                             {/* iPhone 12 - for Tablet Only */}
-                            <div className="hidden md:block absolute md:bottom-32 right-5 lg:hidden">
+                            <div className="hidden md:block absolute md:top-0 right-1 lg:hidden">
                                 <img
                                     src={iphone12}
                                     alt="iPhone"
-                                    width={150}
+                                    width={300}
                                     height={300} // asl proporsiyasiga mos keladigan balandlik
-                                    className="w-[150px] h-[300px] object-contain"
+                                    className=""
                                 />
                             </div>
                         </div>
 
                         {/* Steps */}
-                        <div>
+                        <div className="grid md:grid-cols-2">
                             <div className="flex items-start mt-5 gap-4">
                                 <span className="px-3 py-1 rounded-full flex justify-center items-center border text-slate-800">
                                     1
@@ -74,13 +74,13 @@ const PriceSection = () => {
                     </div>
 
                     {/* iPhone 13 - for Desktop Only */}
-                    <div className="absolute bottom-0 right-0 xl:right-10 hidden lg:block">
+                    <div className="absolute bottom-40 xl:bottom-48 2xl:bottom-32 right-0 xl:right-10 hidden lg:block">
                         <img
                             src={iphone13}
                             alt="iPhone 13"
-                            width={600}
+                            width={500}
                             height={400} // taxminiy original aspect ratio
-                            className="w-[600px] h-[750px] object-center object-contain"
+                            className=""
                         />
                     </div>
                 </div>

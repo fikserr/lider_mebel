@@ -93,7 +93,7 @@ const UserNavbar = () => {
                             onClick={toggleMobileSearch}
                         />
                         <div
-                            className={`absolute top-12 left-10 sm428:left-10 transition-all duration-200 ease-in transform origin-top ${isMobileSearchOpen
+                            className={`absolute top-12 left-1 sm428:left-10 transition-all duration-200 ease-in transform origin-top ${isMobileSearchOpen
                                     ? "scale-y-10 opacity-100"
                                     : "scale-y-10 opacity-0"
                                 }`}

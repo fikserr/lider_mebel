@@ -25,7 +25,7 @@ const Section = ({ title, link, children }) => (
   </div>
 );
 
-const Home = ({ products, banners, favorites }) => {
+const Home = ({ categories, banners, favorites }) => {
   const [showShoes, setShowShoes] = useState(false);
   const [showClothes, setShowClothes] = useState(false);
   const [showAccessories, setShowAccessories] = useState(false);
@@ -34,37 +34,7 @@ const Home = ({ products, banners, favorites }) => {
   const { url } = usePage();
   const searchParams = new URLSearchParams(url.split('?')[1]);
   const searchQuery = searchParams.get('search') || '';
-
-  // Qidiruv bo'yicha filterlangan mahsulotlar
-  const filteredProducts = useMemo(() => {
-    if (!searchQuery.trim()) return products;
-
-    return products.filter(product => {
-      const query = searchQuery.toLowerCase();
-      
-      // Mahsulot nomida qidirish
-      const nameMatch = product.product_name?.toLowerCase().includes(query);
-      
-      // Brend bo'yicha qidirish
-      const brandMatch = product.brend?.toLowerCase().includes(query);
-      
-      // Kategoriya bo'yicha qidirish
-      const categoryMatch = product.category?.name?.toLowerCase().includes(query);
-      
-      // Variant ma'lumotlari bo'yicha qidirish
-      const variantMatch = product.variants?.some(variant => {
-        const colorMatch = variant.colors?.some(color => 
-          color.toLowerCase().includes(query)
-        );
-        const sizeMatch = variant.sizes?.some(size => 
-          size.toLowerCase().includes(query)
-        );
-        return colorMatch || sizeMatch;
-      });
-
-      return nameMatch || brandMatch || categoryMatch || variantMatch;
-    });
-  }, [products, searchQuery]);
+  // console.log(categories);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -88,98 +58,32 @@ const Home = ({ products, banners, favorites }) => {
         <HomeHero banner={banners} />
       </Suspense>
 
-      <div className='px-5 xl:px-20'>
-        {/* Qidiruv natijalari bo'limi */}
-        {searchQuery && (
-          <div className="my-6 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
-            <h2 className="text-2xl font-bold font-oswald mb-2 text-blue-900">
-              Qidiruv natijalari: "{searchQuery}"
-            </h2>
-            <p className="text-blue-700 mb-4">
-              {filteredProducts.length} ta mahsulot topildi
-            </p>
-            
-            {filteredProducts.length > 0 ? (
-              <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3'>
-                {filteredProducts.map((item) => {
-                  const minPrice = Math.min(...item.variants.map(v => v.price));
-                  
-                  return (
-                    <Link 
-                      href={`/detail/${item.id}`} 
-                      key={item.id} 
-                      className='rounded relative border bg-white hover:shadow-lg transition-shadow' 
-                      aria-label={`View details for ${item.product_name}`}
-                    >
-                      <div className='flex justify-center rounded-t-lg overflow-hidden'>
-                        <img
-                          src={`/storage/${item.photo1}?v=${Date.now()}`}
-                          loading="lazy"
-                          alt={item.product_name}
-                          className="w-full object-cover h-56"
-                        />
-                      </div>
-                      <div className='p-3'>
-                        <p className='text-xl font-semibold truncate'>
-                          {item.product_name}
-                        </p>
-                        <p className='text-lg font-bold text-blue-600'>
-                          {minPrice.toLocaleString()} <span className='text-sm text-slate-500'>so'm</span>
-                        </p>
-                        <p className='text-sm text-slate-500 truncate'>
-                          {item.variants.map((variant, index) => (
-                            <span key={variant.id}>
-                              {variant.sizes?.join(', ')}
-                              {index < item.variants.length - 1 ? ', ' : ''}
-                            </span>
-                          ))}
-                        </p>
-                      </div>
-                    </Link>
-                  );
-                })}
+      <div className="px-5 md:px-10 xl:px-20 py-8">
+        <h2 className="text-3xl font-bold font-oswald mb-6">Kategoriyalar</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          {categories.map((category) => (
+            <Link 
+              key={category.id} 
+              href={`/category/${category.id}`}
+              className="group cursor-pointer"
+            >
+              <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 bg-white">
+                <img 
+                  src={`/storage/${category.image}`} 
+                  alt={category.name}
+                  className="w-full h-48 md:h-56 object-cover group-hover:scale-110 transition-transform duration-300"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/placeholder.png';
+                  }}
+                />
               </div>
-            ) : (
-              <div className="text-center py-8 bg-white rounded-lg">
-                <p className="text-xl text-gray-500">
-                  Hech qanday mahsulot topilmadi
-                </p>
-                <p className="text-gray-400 mt-2">
-                  Boshqa kalit so'zlar bilan qidirib ko'ring
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Barcha sectionlar doimo ko'rinadi */}
-        {showShoes && (
-          <Section title="Oyoq kiyimlar" link="/category/3">
-            <Suspense fallback={
-              <div className="w-full min-h-[400px] flex items-center justify-center">
-                <Spinner />
-              </div>
-            }>
-              <HomeProducts data={products} favorites={favorites} />
-            </Suspense>
-          </Section>
-        )}
-
-        {showClothes && (
-          <Section title="Kiyimlar" link="/category/3">
-            <Suspense fallback={<Spinner />}>
-              <ClothesProducts data={products} favorites={favorites} />
-            </Suspense>
-          </Section>
-        )}
-
-        {showAccessories && (
-          <Section title="Aksesuarlar" link="/category/1">
-            <Suspense fallback={<Spinner />}>
-              <AccessoryProducts data={products} favorites={favorites} />
-            </Suspense>
-          </Section>
-        )}
+              <h3 className="mt-3 text-lg md:text-xl font-semibold font-oswald text-center group-hover:text-blue-600 transition-colors">
+                {category.name}
+              </h3>
+            </Link>
+          ))}
+        </div>
       </div>
 
       <Suspense fallback={<Spinner />}>

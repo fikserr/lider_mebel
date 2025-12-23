@@ -146,7 +146,7 @@ const Footer = () => {
                         <li className="text-base">+998 98 001 10 11</li>
                         <li>Messengerlar</li>
                         <li className="flex gap-1">
-                            <a href="https://t.me/LIDERMEBELLUX">
+                            <a target="_blank" href="https://t.me/LIDERMEBELLUX">
                                 <img
                                     src={telegram}
                                     alt="Telegram"
@@ -156,7 +156,7 @@ const Footer = () => {
                                     loading="lazy"
                                 />
                             </a>
-                            <a href="https://wa.me/qr/4DDJNMUX6OH2F1">
+                            <a target="_blank" href="https://wa.me/qr/4DDJNMUX6OH2F1">
                                 <img
                                     src={whatsapp}
                                     alt="Whatsapp"
@@ -166,7 +166,7 @@ const Footer = () => {
                                     loading="lazy"
                                 />
                             </a>
-                            <a href="https://www.instagram.com/lidermebellux_?igsh=bHQ2ZXphZm83MTE4">
+                            <a target="_blank" href="https://www.instagram.com/lidermebellux_?igsh=bHQ2ZXphZm83MTE4">
                                 <img
                                     src={vk}
                                     alt="VK"
@@ -184,7 +184,7 @@ const Footer = () => {
             {/* Socials bottom */}
             <div className="pb-5 md:hidden">
                 <div className="flex gap-2 justify-center py-5">
-                    <a href="https://t.me/LIDERMEBELLUX">
+                    <a target="_blank" href="https://t.me/LIDERMEBELLUX">
                         <img
                             src={telegram}
                             alt="Telegram"
@@ -194,7 +194,7 @@ const Footer = () => {
                             loading="lazy"
                         />
                     </a>
-                    <a href="https://wa.me/qr/4DDJNMUX6OH2F1">
+                    <a target="_blank" href="https://wa.me/qr/4DDJNMUX6OH2F1">
                         <img
                             src={whatsapp}
                             alt="Whatsapp"
@@ -204,7 +204,7 @@ const Footer = () => {
                             loading="lazy"
                         />
                     </a>
-                    <a href="https://www.instagram.com/lidermebellux_?igsh=bHQ2ZXphZm83MTE4">
+                    <a target="_blank" href="https://www.instagram.com/lidermebellux_?igsh=bHQ2ZXphZm83MTE4">
                         <img
                             src={vk}
                             alt="VK"

@@ -7,10 +7,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="Prosys biznesingizni avtomatlashtiradigan va web dasturlar ishlab chiqadigan kompaniya. 1C integratsiyasi, mobil ilovalar va Telegram botlar yaratamiz.">
     <meta name="robots" content="index, follow">
-    <title>Prosys – Avtomatlashtirish va IT yechimlari</title>
+    <title>Lider Mebel Lux</title>
     {{-- Preload Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="{{ Vite::asset('public/storage/assets/favicon.ico') }}" type="image/x-icon">
 
     {{-- Preload Vite build CSS/JS for faster FCP --}}
     @viteReactRefresh

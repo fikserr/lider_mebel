@@ -18,56 +18,54 @@ class ProductController extends Controller
         ]);
     }
 
-    public function clothesProducts($id)
-    {
-        $products = Product::with(['category', 'variants'])
-            ->where('category_id', $id)
-            ->get();
+    // public function clothesProducts($id)
+    // {
+    //     $products = Product::with(['category', 'variants'])
+    //         ->where('category_id', $id)
+    //         ->get();
 
-        $categories = Category::all(); // Barcha kategoriyalarni olish
+    //     $categories = Category::all(); // Barcha kategoriyalarni olish
 
-        return Inertia::render('Clothes', [
-            'products' => $products,
-            'categories' => $categories,
-        ]);
-    }
+    //     return Inertia::render('Clothes', [
+    //         'products' => $products,
+    //         'categories' => $categories,
+    //     ]);
+    // }
 
 
-    public function ShoesProducts($id)
-    {
-        $products = Product::with('category', 'variants')
-            ->where('category_id', $id) // dinamik kategoriya
-            ->get();
-        $categories = Category::all(); // Barcha kategoriyalarni olish
-        return Inertia::render('Shoes', [
-            'products' => $products,
-            'categories' => $categories,
-        ]);
-    }
+    // public function ShoesProducts($id)
+    // {
+    //     $products = Product::with('category', 'variants')
+    //         ->where('category_id', $id) // dinamik kategoriya
+    //         ->get();
+    //     $categories = Category::all(); // Barcha kategoriyalarni olish
+    //     return Inertia::render('Shoes', [
+    //         'products' => $products,
+    //         'categories' => $categories,
+    //     ]);
+    // }
 
-    public function AccesProducts($id)
-    {
-        $products = Product::with('category', 'variants')
-            ->where('category_id', $id) // dinamik kategoriya
-            ->get();
-        $categories = Category::all(); // Barcha kategoriyalarni olish
-        return Inertia::render('Accessory', [
-            'products' => $products,
-            'categories' => $categories,
-        ]);
-    }
+    // public function AccesProducts($id)
+    // {
+    //     $products = Product::with('category', 'variants')
+    //         ->where('category_id', $id) // dinamik kategoriya
+    //         ->get();
+    //     $categories = Category::all(); // Barcha kategoriyalarni olish
+    //     return Inertia::render('Accessory', [
+    //         'products' => $products,
+    //         'categories' => $categories,
+    //     ]);
+    // }
     public function userProduct()
-    {
-        $banners = \App\Models\Banner::latest()->get();
-        $products = Product::with('category', 'variants')->get(); // kerak bo‘lsa filter, search keyin qo‘shamiz
-        $favorites = Auth::user()->favorites;
+{
+    $banners = \App\Models\Banner::latest()->get();
+    $categories = Category::latest()->get();
 
-        return Inertia::render('Home', [
-            'products' => $products,
-            'banners' => $banners,
-            'favorites' => $favorites,
-        ]);
-    }
+    return Inertia::render('Home', [
+        'categories' => $categories,
+        'banners' => $banners,
+    ]);
+}
 
     public function show($id)
     {
