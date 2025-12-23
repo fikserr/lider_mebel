@@ -25,7 +25,7 @@ const Section = ({ title, link, children }) => (
   </div>
 );
 
-const Home = ({ categories, banners, favorites}) => {
+const Home = ({ categories, banners, favorites }) => {
   const [showShoes, setShowShoes] = useState(false);
   const [showClothes, setShowClothes] = useState(false);
   const [showAccessories, setShowAccessories] = useState(false);
@@ -34,38 +34,7 @@ const Home = ({ categories, banners, favorites}) => {
   const { url } = usePage();
   const searchParams = new URLSearchParams(url.split('?')[1]);
   const searchQuery = searchParams.get('search') || '';
-  console.log(categories);
-  
-  // Qidiruv bo'yicha filterlangan mahsulotlar
-  // const filteredProducts = useMemo(() => {
-  //   if (!searchQuery.trim()) return products;
-
-  //   return products.filter(product => {
-  //     const query = searchQuery.toLowerCase();
-      
-  //     // Mahsulot nomida qidirish
-  //     const nameMatch = product.product_name?.toLowerCase().includes(query);
-      
-  //     // Brend bo'yicha qidirish
-  //     const brandMatch = product.brend?.toLowerCase().includes(query);
-      
-  //     // Kategoriya bo'yicha qidirish
-  //     const categoryMatch = product.category?.name?.toLowerCase().includes(query);
-      
-  //     // Variant ma'lumotlari bo'yicha qidirish
-  //     const variantMatch = product.variants?.some(variant => {
-  //       const colorMatch = variant.colors?.some(color => 
-  //         color.toLowerCase().includes(query)
-  //       );
-  //       const sizeMatch = variant.sizes?.some(size => 
-  //         size.toLowerCase().includes(query)
-  //       );
-  //       return colorMatch || sizeMatch;
-  //     });
-
-  //     return nameMatch || brandMatch || categoryMatch || variantMatch;
-  //   });
-  // }, [products, searchQuery]);
+  // console.log(categories);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -85,18 +54,37 @@ const Home = ({ categories, banners, favorites}) => {
 
   return (
     <div>
-      <div>
-        {categories.map((category) => (
-          <div key={category.id}>
-           <img src={`storage/${category.image}`} alt={category.name} />
-           <h1>{category.name}</h1>
-          </div>
-        ))} 
-      </div>
       <Suspense fallback={<Spinner />}>
         <HomeHero banner={banners} />
       </Suspense>
 
+      <div className="px-5 md:px-10 xl:px-20 py-8">
+        <h2 className="text-3xl font-bold font-oswald mb-6">Kategoriyalar</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          {categories.map((category) => (
+            <Link 
+              key={category.id} 
+              href={`/category/${category.id}`}
+              className="group cursor-pointer"
+            >
+              <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 bg-white">
+                <img 
+                  src={`/storage/${category.image}`} 
+                  alt={category.name}
+                  className="w-full h-48 md:h-56 object-cover group-hover:scale-110 transition-transform duration-300"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/placeholder.png';
+                  }}
+                />
+              </div>
+              <h3 className="mt-3 text-lg md:text-xl font-semibold font-oswald text-center group-hover:text-blue-600 transition-colors">
+                {category.name}
+              </h3>
+            </Link>
+          ))}
+        </div>
+      </div>
 
       <Suspense fallback={<Spinner />}>
         <PriceSection />

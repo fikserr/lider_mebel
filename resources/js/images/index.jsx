@@ -1,4 +1,4 @@
-import iphone12 from '@images/group329rb.avif'
+import iphone12 from '@images/sofa.png'
 import iphone13 from '@images/sofa.png'
 import inbox from '@images/inbox.avif'
 import user from '@images/user.avif'
