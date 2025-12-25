@@ -33,66 +33,75 @@ const blogs = [
 
 export default function BlogSection() {
   return (
-    <div className="px-5 xl:px-20 my-5 lg:my-10">
+    <section className="px-4 sm:px-6 xl:px-20 my-6 lg:my-10">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-oswald">Bizning blog</h1>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-lg sm:text-xl font-oswald">
+          Bizning blog
+        </h1>
       </div>
 
       {/* Carousel */}
-      <Carousel
-        opts={{ align: "start" }}
-        className="w-full mt-5"
-      >
-        <CarouselContent>
+      <Carousel opts={{ align: "start" }} className="w-full">
+        <CarouselContent className="-ml-2 sm:-ml-4">
           {blogs.map((blog, i) => (
             <CarouselItem
               key={i}
-              className="sm:basis-full md:basis-1/2 lg:basis-1/3"
+              className="pl-2 sm:pl-4
+                         basis-full
+                         sm:basis-1/2
+                         lg:basis-1/3"
             >
-              <div className="p-2">
-                <Card className="rounded-2xl shadow-md">
-                  <CardContent className="flex flex-col gap-3 p-4">
-                    
-                    {/* Image */}
-                    <img
-                      src={blog.img}
-                      alt={`Blog_${i}`}
-                      className="w-full h-48 object-cover rounded-xl"
-                      loading="lazy"
-                    />
+              <Card className="h-full rounded-2xl shadow-md hover:shadow-lg transition">
+                <CardContent className="flex flex-col gap-3 p-4 h-full">
+                  
+                  {/* Image */}
+                  <img
+                    src={blog.img}
+                    alt={`Blog_${i}`}
+                    loading="lazy"
+                    className="
+                      w-full
+                      h-40
+                      sm:h-44
+                      md:h-48
+                      object-cover
+                      rounded-xl
+                    "
+                  />
 
-                    {/* Title & Text */}
-                    <div>
-                      <h3 className="font-oswald text-sm md:text-base">
-                        {blog.title}
-                      </h3>
-                      <p className="font-oswald text-sm md:text-base text-slate-600">
-                        {blog.text}
-                      </p>
-                    </div>
+                  {/* Title & Text */}
+                  <div className="flex flex-col gap-1">
+                    <h3 className="font-oswald text-sm sm:text-base line-clamp-2">
+                      {blog.title}
+                    </h3>
+                    <p className="font-oswald text-xs sm:text-sm text-slate-600 line-clamp-3">
+                      {blog.text}
+                    </p>
+                  </div>
 
-                    {/* Footer */}
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs md:text-sm font-oswald text-slate-400">
-                        Batafsil ma'lumot oling
-                      </span>
-                      <span className="text-xs md:text-sm font-oswald text-slate-400">
-                        {blog.date}
-                      </span>
-                    </div>
+                  {/* Footer */}
+                  <div className="mt-auto flex items-center justify-between">
+                    <span className="text-xs font-oswald text-slate-400 hover:underline cursor-pointer">
+                      Batafsil
+                    </span>
+                    <span className="text-xs font-oswald text-slate-400">
+                      {blog.date}
+                    </span>
+                  </div>
 
-                  </CardContent>
-                </Card>
-              </div>
+                </CardContent>
+              </Card>
             </CarouselItem>
           ))}
         </CarouselContent>
 
-        {/* Controls */}
-        <CarouselPrevious />
-        <CarouselNext />
+        {/* Controls (mobile’da yo‘q) */}
+        <div className="hidden md:block">
+          <CarouselPrevious />
+          <CarouselNext />
+        </div>
       </Carousel>
-    </div>
+    </section>
   );
 }

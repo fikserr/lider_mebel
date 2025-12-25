@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import axios from "axios";
+import { HiOutlineChevronLeft } from "react-icons/hi";
 import { ImStarFull, ImStarEmpty } from "react-icons/im";
 import favoriteImg from "@images/favorite.png";
 import { useToast } from "@/hooks/use-toast"; // Agar sizda mavjud bo'lsa
@@ -61,7 +62,13 @@ const EmptyFavorites = ({ favorites = [], products = [] }) => {
     if (favorites.length > 0 && favoriteProducts.length > 0) {
         return (
             <div className="w-10/12 mx-auto min-h-screen">
-                <h1 className="text-3xl md:text-4xl font-bold mb-8 mt-24">SEVIMLILAR</h1>
+                <Link
+                    href="/"
+                    className="inline-flex items-center hover:opacity-70 mt-24 mb-8"
+                >
+                    <HiOutlineChevronLeft className="mr-2 text-xl" />
+                    <h1 className="text-3xl md:text-4xl font-bold">SEVIMLILAR</h1>
+                </Link>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
                     {favoriteProducts.map((product) => {
                         const isStarred = starredCards[product.id];
@@ -113,7 +120,13 @@ const EmptyFavorites = ({ favorites = [], products = [] }) => {
     // Agar sevimli mahsulotlar yo'q bo'lsa
     return (
         <div className="mt-24 px-5 md:px-10 xl:px-20 min-h-screen">
-            <h1 className="text-3xl md:text-4xl font-bold">SEVIMLILAR</h1>
+            <Link
+                href="/"
+                className="inline-flex items-center mb-2 hover:opacity-70"
+            >
+                <HiOutlineChevronLeft className="mr-2 text-xl" />
+                <h1 className="text-3xl md:text-4xl font-bold">SEVIMLILAR</h1>
+            </Link>
             <div className="flex flex-col items-center justify-center w-full h-screen mb-32 px-4 text-center">
                 <div className="w-24 h-24 mb-6">
                     <img

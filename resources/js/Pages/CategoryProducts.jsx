@@ -1,10 +1,14 @@
 import { useState, useMemo } from "react";
 import { Link, Head } from "@inertiajs/react";
 import { HiOutlineChevronLeft } from "react-icons/hi";
+import { ImStarFull, ImStarEmpty } from "react-icons/im";
+import axios from "axios";
 import FilterModal from "@/components/shared/filter-modal";
 import FilterSidebar from "@/components/shared/filter-sidebar";
+import { useToast } from "@/hooks/use-toast";
 
-const CategoryProducts = ({ category, products = [], categories = [] }) => {
+const CategoryProducts = ({ category, products = [], categories = [], favorites = [] }) => {
+  const { toast } = useToast();
   const [sortBy, setSortBy] = useState("default");
 
   // Filter state'lari
@@ -13,6 +17,20 @@ const CategoryProducts = ({ category, products = [], categories = [] }) => {
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [priceRange, setPriceRange] = useState({ minPrice: "", maxPrice: "" });
+  
+  // Sevimlilar state'i
+  const [localFavorites, setLocalFavorites] = useState(favorites);
+  
+  // Yulduzcha state'ini initialize qilish
+  const initialStars = useMemo(() => {
+    const stars = {};
+    localFavorites?.forEach((fav) => {
+      stars[fav.id] = true;
+    });
+    return stars;
+  }, [localFavorites]);
+
+  const [starredCards, setStarredCards] = useState(initialStars);
   
   // Debug
   console.log('=== CategoryProducts Debug ===');
@@ -106,6 +124,44 @@ const CategoryProducts = ({ category, products = [], categories = [] }) => {
     setSortBy("default");
   };
 
+  // Sevimlilar funksiyasi
+  const handleFavoriteClick = async (e, id) => {
+    e.preventDefault(); // Link ga o'tishning oldini olish
+    e.stopPropagation(); // Event propagation to'xtatish
+    
+    try {
+      if (starredCards[id]) {
+        await axios.delete(`/favorites/${id}`);
+        toast({
+          title: "Sevimlilardan o'chirildi",
+          description: "✅ Mahsulot o'chirildi",
+        });
+        // Lokal state dan ham o'chirish
+        setLocalFavorites((prev) => prev.filter((fav) => fav.id !== id));
+      } else {
+        await axios.post("/favorites", { product_id: id });
+        toast({
+          title: "Sevimlilarga qo'shildi",
+          description: "✅ Mahsulot qo'shildi",
+        });
+        // Lokal state ga qo'shish
+        const addedProduct = products.find((p) => p.id === id);
+        setLocalFavorites((prev) => [...prev, addedProduct]);
+      }
+
+      setStarredCards((prev) => ({ ...prev, [id]: !prev[id] }));
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Xatolik",
+        description: starredCards[id]
+          ? "Sevimlilardan o'chirishda xatolik ❌"
+          : "Sevimlilarga qo'shishda xatolik ❌",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <>
       <Head title={category.name} />
@@ -162,35 +218,52 @@ const CategoryProducts = ({ category, products = [], categories = [] }) => {
             </div>
 
             {/* Products Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
-              {filteredProducts.map(p => (
-                <Link
-                  key={p.id}
-                  href={`/detail/${p.id}`}
-                  className="bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300 group"
-                >
-                  <div className="overflow-hidden rounded-t-lg">
-                    <img
-                      src={`/storage/${p.photo1}`}
-                      alt={p.product_name}
-                      className="h-48 w-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = '/placeholder.png';
-                      }}
-                    />
-                  </div>
-                  <div className="p-3">
-                    <h3 className="font-semibold line-clamp-2 mb-1">{p.product_name}</h3>
-                    <p className="text-sm text-gray-500">{p.brend}</p>
-                    {p.variants?.[0]?.price && (
-                      <p className="text-sm font-bold mt-1">
-                        {p.variants[0].price.toLocaleString()} so'm
-                      </p>
-                    )}
-                  </div>
-                </Link>
-              ))}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-5">
+              {filteredProducts.map(p => {
+                const isStarred = starredCards[p.id];
+                return (
+                  <Link
+                    key={p.id}
+                    href={`/detail/${p.id}`}
+                    className="bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300 group relative"
+                  >
+                    <div className="overflow-hidden rounded-t-lg">
+                      <img
+                        src={`/storage/${p.photo1}`}
+                        alt={p.product_name}
+                        className="h-48 w-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = '/placeholder.png';
+                        }}
+                      />
+                    </div>
+                    
+                    {/* Yulduzcha button */}
+                    <button
+                      onClick={(e) => handleFavoriteClick(e, p.id)}
+                      className="absolute top-2 right-2 p-2 rounded-full transition-all duration-200"
+                      aria-label={isStarred ? "Sevimlilardan o'chirish" : "Sevimlilarga qo'shish"}
+                    >
+                      {isStarred ? (
+                        <ImStarFull className="text-xl text-yellow-400" />
+                      ) : (
+                        <ImStarEmpty className="text-xl text-gray-600" />
+                      )}
+                    </button>
+                    
+                    <div className="p-3">
+                      <h3 className="font-semibold line-clamp-2 mb-1">{p.product_name}</h3>
+                      <p className="text-sm text-gray-500">{p.brend}</p>
+                      {p.variants?.[0]?.price && (
+                        <p className="text-sm font-bold mt-1">
+                          {p.variants[0].price.toLocaleString()} so'm
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Empty State */}
