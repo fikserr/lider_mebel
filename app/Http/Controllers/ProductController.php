@@ -57,15 +57,15 @@ class ProductController extends Controller
     //     ]);
     // }
     public function userProduct()
-{
-    $banners = \App\Models\Banner::latest()->get();
-    $categories = Category::latest()->get();
+    {
+        $banners = \App\Models\Banner::latest()->get();
+        $categories = Category::latest()->get();
 
-    return Inertia::render('Home', [
-        'categories' => $categories,
-        'banners' => $banners,
-    ]);
-}
+        return Inertia::render('Home', [
+            'categories' => $categories,
+            'banners' => $banners,
+        ]);
+    }
 
     public function show($id)
     {
@@ -93,10 +93,11 @@ class ProductController extends Controller
             'photo1' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
             'photo2' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
             'photo3' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
-            'variants' => 'required|array',
-            'variants.*.price' => 'required|numeric',
-            'variants.*.sizes' => 'required|array',
-            'variants.*.colors' => 'required|array',
+            'variants' => 'sometimes|array',
+            'variants.*.price' => 'required_with:variants|numeric',
+            'variants.*.sizes' => 'required_with:variants|array',
+            'variants.*.colors' => 'required_with:variants|array',
+
         ]);
 
         foreach ([1, 2, 3] as $i) {
@@ -117,13 +118,27 @@ class ProductController extends Controller
         ]);
 
         // Variantlarini saqlaymiz
-        foreach ($data['variants'] as $variant) {
-            $product->variants()->create([
-                'sizes' => $variant['sizes'],
-                'colors' => $variant['colors'],
-                'price' => $variant['price'],
-            ]);
+        // Variantlarini saqlaymiz (AGAR KELSA)
+        if (!empty($data['variants']) && is_array($data['variants'])) {
+            foreach ($data['variants'] as $variant) {
+
+                // agar price ham yo‘q bo‘lsa — skip
+                if (
+                    empty($variant['price']) &&
+                    empty($variant['sizes']) &&
+                    empty($variant['colors'])
+                ) {
+                    continue;
+                }
+
+                $product->variants()->create([
+                    'sizes' => $variant['sizes'] ?? [],
+                    'colors' => $variant['colors'] ?? [],
+                    'price' => $variant['price'] ?? 0,
+                ]);
+            }
         }
+
 
         return redirect()->back()->with('success', 'Mahsulot muvaffaqiyatli qo‘shildi!');
     }
@@ -148,7 +163,7 @@ class ProductController extends Controller
             'photo_url1' => 'nullable|string',
             'photo_url2' => 'nullable|string',
             'photo_url3' => 'nullable|string',
-            'variants' => 'required|json',
+            'variants' => 'nullable|json',
         ]);
 
         $product->update([
@@ -162,13 +177,16 @@ class ProductController extends Controller
 
         $product->variants()->delete();
 
-        foreach (json_decode($data['variants'], true) as $variant) {
-            $product->variants()->create([
-                'sizes' => $variant['sizes'],
-                'colors' => $variant['colors'],
-                'price' => $variant['price'],
-            ]);
+        if (!empty($data['variants'])) {
+            foreach (json_decode($data['variants'], true) as $variant) {
+                $product->variants()->create([
+                    'sizes' => $variant['sizes'] ?? [],
+                    'colors' => $variant['colors'] ?? [],
+                    'price' => $variant['price'] ?? 0,
+                ]);
+            }
         }
+
 
         return response()->json(['message' => 'Mahsulot yangilandi ✅']);
     }

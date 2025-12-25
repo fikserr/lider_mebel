@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { router } from '@inertiajs/react';
 
 const FilterSidebar = ({
     brands = [],
@@ -58,13 +59,10 @@ const FilterSidebar = ({
                             <button
                                 key={cat.id}
                                 className={`p-2 rounded-md w-full text-left transition-colors
-                                    ${selectedCategory === cat.id 
-                                        ? 'bg-black text-white' 
+    ${selectedCategory === cat.id
+                                        ? 'bg-black text-white'
                                         : 'bg-gray-50 hover:bg-gray-100 text-black'}`}
-                                onClick={() => {
-                                    // Kategoriya bosilganda to'g'ridan-to'g'ri o'sha sahifaga o'tish
-                                    window.location.href = `/category/${cat.id}`;
-                                }}
+                                onClick={() => router.visit(`/category/${cat.id}`)}
                             >
                                 {cat.name}
                             </button>
@@ -114,8 +112,8 @@ const FilterSidebar = ({
                             <button
                                 key={size}
                                 className={`border rounded p-2 text-sm cursor-pointer transition-colors
-                                    ${selectedSizes.includes(size) 
-                                        ? 'bg-black text-white border-black' 
+                                    ${selectedSizes.includes(size)
+                                        ? 'bg-black text-white border-black'
                                         : 'bg-white text-black border-gray-300 hover:border-black'}`}
                                 onClick={() => toggleArrayItem(selectedSizes, setSelectedSizes, size, onSizeChange)}
                             >
@@ -137,8 +135,8 @@ const FilterSidebar = ({
                             <button
                                 key={color}
                                 className={`border rounded p-2 text-xs cursor-pointer capitalize transition-colors
-                                    ${selectedColors.includes(color) 
-                                        ? 'bg-black text-white border-black' 
+                                    ${selectedColors.includes(color)
+                                        ? 'bg-black text-white border-black'
                                         : 'bg-white text-black border-gray-300 hover:border-black'}`}
                                 onClick={() => toggleArrayItem(selectedColors, setSelectedColors, color, onColorChange)}
                             >
@@ -160,8 +158,8 @@ const FilterSidebar = ({
                             <button
                                 key={brand}
                                 className={`p-2 rounded-md w-full text-left transition-colors
-                                    ${selectedBrands.includes(brand) 
-                                        ? 'bg-black text-white' 
+                                    ${selectedBrands.includes(brand)
+                                        ? 'bg-black text-white'
                                         : 'bg-gray-50 hover:bg-gray-100 text-black'}`}
                                 onClick={() => {
                                     toggleArrayItem(selectedBrands, setSelectedBrands, brand, onBrandChange);

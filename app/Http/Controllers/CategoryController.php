@@ -58,7 +58,6 @@ class CategoryController extends Controller
     {
         $category   = Category::findOrFail($id);
         $categories = Category::all(); // 🔥 FILTER UCHUN MUHIM
-
         $products = Product::where('category_id', $id)
             ->with(['category', 'variants'])
             ->get()
